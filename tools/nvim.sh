@@ -12,3 +12,6 @@ rm hic
 rm -f $HOME/.local/bin/nvim
 ln -s $HOME/.local/{nvim-linux64,}/bin/nvim
 
+rm -rf $HOME/.config/nvim/
+cp -r ${0%/*}/../.config/nvim/ $HOME/.config/
+
