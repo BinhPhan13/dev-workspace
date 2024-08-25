@@ -12,6 +12,9 @@ rm hic
 rm -f $HOME/.local/bin/nvim
 ln -s $HOME/.local/{nvim-linux64,}/bin/nvim
 
+mkdir -p $HOME/.config/
 rm -rf $HOME/.config/nvim/
-cp -r ${0%/*}/../.config/nvim/ $HOME/.config/
+
+path=$(realpath $0)
+cp -r ${path%/*}/../.config/nvim/ $HOME/.config/
 

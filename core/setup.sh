@@ -1,2 +1,3 @@
-cp ${0%/*}/.[!.]* $HOME
+path=$(realpath $0)
+cp ${path%/*}/.[!.]* $HOME
 
