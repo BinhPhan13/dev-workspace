@@ -12,7 +12,7 @@ url="https://raw.githubusercontent.com/imomaliev/
     tmux-bash-completion/master/completions/tmux"
 curl -L ${url//[[:space:]]/} -o tmux.bash &&
 mkdir -p $HOME/.local/share/bash-completion/completions/
-mv $dir/tmux.bash $HOME/.local/share/bash-completion/completions/
+mv tmux.bash $HOME/.local/share/bash-completion/completions/
 
 mkdir -p $HOME/.config/
 rm -rf $HOME/.config/tmux/
