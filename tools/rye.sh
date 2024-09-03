@@ -12,6 +12,6 @@ $cmd
 " >> $HOME/.bashrc
 
 eval $cmd
-mkdir -p $HOME/.local/share/bash-completion/completions
+mkdir -p $HOME/.local/share/bash-completion/completions/
 rye self completion > $HOME/.local/share/bash-completion/completions/rye.bash
 

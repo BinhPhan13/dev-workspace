@@ -1,7 +1,9 @@
 #!/bin/bash
+which nvim && exit 1
+
 url="https://github.com/neovim/neovim/releases/download/
     v0.9.5/nvim-linux64.tar.gz"
-curl -L ${url//[[:space:]]/} -o hic &&
+curl -L ${url//[[:space:]]/} -o hic || exit 1
 
 mkdir -p $HOME/.local/bin/
 
@@ -15,6 +17,6 @@ ln -s $HOME/.local/{nvim-linux64,}/bin/nvim
 mkdir -p $HOME/.config/
 rm -rf $HOME/.config/nvim/
 
-path=$(realpath $0)
-cp -r ${path%/*}/../.config/nvim/ $HOME/.config/
+dir=$(dirname $0)
+cp -r $dir/../.config/nvim/ $HOME/.config/
 

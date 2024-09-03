@@ -1,0 +1,363 @@
+.TH EZA 1
+.SH NAME
+eza - modern replacement for ls
+
+
+.SH SYNOPSIS
+.B eza
+[OPTIONS] [FILES...]
+
+
+.SH DESCRIPTION
+.B eza
+is a modern replacement for
+.BR ls (1).
+
+.P
+It uses colours for information by default, helping you distinguish between many types of files, such as whether you are the owner, or in the owning group.
+
+.P
+It also has extra features not present in the original
+.BR ls ,
+such as viewing the Git status for a directory, or recursing into directories with a tree view.
+
+
+.SH META OPTIONS
+.TP
+.B --help
+Show list of command-line options.
+.TP
+.B -v, --version
+Show version of eza.
+
+
+.SH DISPLAY OPTIONS
+.TP
+.B -1, --oneline
+Display one entry per line.
+.TP
+.B -F, --classify=WHEN
+Display file kind indicators next to file names.
+
+Valid settings are 'auto' (default), 'always', and 'never.
+.TP
+.B -G, --grid
+Display entries as a grid (default).
+.TP
+.B -l, --long
+Display extended file metadata as a table.
+.TP
+.B -R, --recurse
+Recurse into directories.
+.TP
+.B -T, --tree
+Recurse into directories as a tree.
+.TP
+.B -X, --dereference
+Dereference symbolic links when displaying information.
+.TP
+.B -x, --across
+Sort the grid across, rather than downwards.
+.TP
+.B --color=WHEN
+When to use terminal colours (using ANSI escape code to colorize the output).
+
+Valid settings are 'auto' (default), 'always', and 'never'.
+
+Manually setting this option overrides
+.B NO_COLOR
+environment.
+.TP
+.B --color-scale
+highlight levels of
+.B fields
+distinctly.
+Use comma(,) separated list of all, age, size
+.TP
+.B --color-scale-mode
+Use gradient or fixed colors in
+.BR --color-scale .
+
+Valid options are 'fixed' or 'gradient' (default).
+.TP
+.B --icons=WHEN
+Display icons next to file names.
+
+Valid settings are 'auto' (default), 'always', and 'never'.
+.TP
+.B --no-quotes
+Don't quote file names with spaces.
+.TP
+.B --hyperlink
+Display entries as hyperlinks
+.TP
+.B -w, --width=COLS
+Set screen width in columns.
+
+
+.SH FILTERING AND SORTING OPTIONS
+.B -a, --all
+Show hidden and "dot" files.
+Use this twice to also show the '.' and '..' directories.
+.TP
+.B -A, --almost-all
+Equivalent to --all; included for compatibility with
+.B ls -A.
+.TP
+.B -d, --list-dirs
+List directories as regular files, rather than recursing and listing their contents.
+.TP
+.B -L, --level=DEPTH
+Limit the depth of recursion.
+.TP
+.B -r, --reverse
+Reverse the sort order.
+.TP
+.B -s, --sort=SORT_FIELD
+Which field to sort by.
+
+Valid sort fields are 'name', 'Name', 'extension', 'Extension', 'size', 'modified', 'changed', 'accessed', 'created', 'inode', 'type', and 'none'.
+
+The 'modified' sort field has the aliases 'date', 'time', and 'newest', and its reverse order has the aliases 'age' and 'oldest'.
+
+Sort fields starting with a capital letter will sort uppercase before lowercase: A then B then a then b. Fields starting with a lowercase letter will mix them: A then a then B then b.
+.TP
+.B -I, --ignore-glob=GLOBS
+Glob patterns, pipe-separated, of files to ignore.
+.TP
+.B --git-ignore
+Do not list files that are ignored by Git.
+.TP
+.B --group-directories-first
+List directories before other files.
+.TP
+.B -D, --only-dirs
+List only directories, not files.
+.TP
+.B -f, --only-files
+List only files, not directories.
+.TP
+.B --show-symlinks
+Explicitly show symbolic links (when used with
+.B --only-files
+|
+.BR --only-dirs )
+.TP
+.B --no-symlinks
+Do not show symbolic links
+
+
+.SH LONG VIEW OPTIONS
+These options are available when running with
+.B --long (-l)
+.TP
+.B -b, --binary
+List file sizes with binary prefixes.
+.TP
+.B -B, --bytes
+List file sizes in bytes, without any prefixes.
+.TP
+.B --changed
+Use the changed timestamp field.
+.TP
+.B -g, --group
+List each file’s group.
+.TP
+.B --smart-group
+Only show group if it has a different name from owner
+.TP
+.B -h, --header
+Add a header row to each column.
+.TP
+.B -H, --links
+List each file’s number of hard links.
+.TP
+.B -i, --inode
+List each file’s inode number.
+.TP
+.B -m, --modified
+Use the modified timestamp field.
+.TP
+.B -M, --mounts
+Show mount details (Linux and Mac only)
+.TP
+.B -n, --numeric
+List numeric user and group IDs.
+.TP
+.B -O, --flags
+List file flags on Mac and BSD systems and file attributes on Windows systems.
+
+By default, Windows attributes are displayed in a long form.  To display in attributes as single character set the environment variable
+.B EZA_WINDOWS_ATTRIBUTES=short.
+On BSD systems see chflags(1) for file flags and their meanings.
+.TP
+.B -S, --blocksize
+List each file’s size of allocated file system blocks.
+.TP
+.B -t, --time=WORD
+Which timestamp field to list.
+Valid timestamp fields are 'modified', 'changed', 'accessed', and 'created'.
+.TP
+.B --time-style=STYLE
+How to format timestamps.
+
+Valid timestamp styles are 'default', 'iso', 'long-iso', 'full-iso', 'relative', or a custom style '+<FORMAT>' (e.g., '+%Y-%m-%d %H:%M' => '2023-09-30 13:00').
+
+<FORMAT> should be a chrono format string.  For details on the chrono format syntax, please read: https://docs.rs/chrono/latest/chrono/format/strftime/index.html .
+
+Alternatively, <FORMAT> can be a two line string, the first line will be used
+for non-recent files and the second for recent files.
+E.g. if <FORMAT> is "%Y-%m-%d %H<newline>%m-%d %H:%M", non-recent files => "2022-12-30 13", recent files => "09-30 13:34".
+.TP
+.B --total-size
+Show recursive directory size (unix only).
+.TP
+.B -u, --accessed
+Use the accessed timestamp field.
+.TP
+.B -U, --created
+Use the created timestamp field.
+.TP
+.B --no-permissions
+Suppress the permissions field.
+.TP
+.B -o, --octal-permissions
+List each file's permissions in octal format.
+.TP
+.B --no-filesize
+Suppress the file size field.
+.TP
+.B --no-user
+Suppress the user field.
+.TP
+.B --no-time
+Suppress the time field.
+.TP
+.B --stdin
+When you wish to pipe directories to eza/read from stdin. Separate one per line or define custom separation char in
+.B EZA_STDIN_SEPARATOR
+env variable.
+.TP
+.B -@, --extended
+List each file’s extended attributes and sizes.
+.TP
+.B -Z, --context
+List each file's security context.
+.TP
+.B --git
+List each file’s Git status, if tracked.
+This adds a two-character column indicating the staged and unstaged statuses respectively. The status character can be '-' for not modified, 'M' for a modified file, 'N' for a new file, 'D' for deleted, 'R' for renamed, 'T' for type-change, 'I' for ignored, and 'U' for conflicted. Directories will be shown to have the status of their contents, which is how ‘deleted’ is possible if a directory contains a file that has a certain status, it will be shown to have that status.
+.TP
+.B --git-repos
+List each directory's Git status, if tracked.
+Symbols shown are '|'= clean, '+'= dirty, and '~'= for unknown.
+.TP
+.B --git-repos-no-status
+List if a directory is a Git repository, but not its status.
+All Git repository directories will be shown as (themed) '-' without status indicated.
+.TP
+.B --no-git
+Don't show Git status (always overrides '--git', '--git-repos', '--git-repos-no-status')
+
+
+.SH ENVIRONMENT VARIABLES
+If an environment variable prefixed with 'EZA_' is not set, for backward compatibility, it will default to its counterpart starting with 'EXA_'.
+
+eza responds to the following environment variables:
+
+.SS COLUMNS
+
+Overrides the width of the terminal, in characters, however,
+-w
+takes precedence.
+
+For example, 'COLUMNS=80 eza' will show a grid view with a maximum width of 80 characters.
+
+This option won’t do anything when eza’s output doesn’t wrap, such as when using the
+.B --long
+view.
+
+.SS EZA_STRICT
+
+Enables _strict mode_, which will make eza error when two command-line options are incompatible.
+
+Usually, options can override each other going right-to-left on the command line, so that eza can be given aliases: creating an alias 'eza=eza --sort=ext' then running 'eza --sort=size' with that alias will run 'eza --sort=ext --sort=size', and the sorting specified by the user will override the sorting specified by the alias.
+
+In strict mode, the two options will not co-operate, and eza will error.
+
+This option is intended for use with automated scripts and other situations where you want to be certain you’re typing in the right command.
+
+.SS EZA_GRID_ROWS
+
+Limits the grid-details view ('eza --grid --long') so it’s only activated when at least the given number of rows of output would be generated.
+
+With widescreen displays, it's possible for the grid to look very wide and sparse, on just one or two lines with none of the columns lining up.
+By specifying a minimum number of rows, you can only use the view if it's going to be worth using.
+
+.SS EZA_ICON_SPACING
+
+Specifies the number of spaces to print between an icon (see the '--icons' option) and its file name.
+
+Different terminals display icons differently, as they usually take up more than one character width on screen, so there's no "standard" number of spaces that eza can use to separate an icon from text. One space may place the icon too close to the text, and two spaces may place it too far away. So the choice is left up to the user to configure depending on their terminal emulator.
+
+.SS NO_COLOR
+
+Disables colours in the output (regardless of its value). Can be overridden by
+.B --color
+option.
+
+See https://no-color.org/ for details.
+
+.SS LS_COLORS, EZA_COLORS
+
+Specifies the colour scheme used to highlight files based on their name and kind, as well as highlighting metadata and parts of the UI.
+
+.SS EZA_OVERRIDE_GIT
+
+Overrides any
+.B --git
+or
+.B --git-repos
+argument
+
+.SS EZA_MIN_LUMINANCE
+Specifies the minimum luminance to use when color-scale is active. It's value can be between -100 to 100.
+
+.SS EZA_ICONS_AUTO
+
+If set, automates the same behavior as using
+.B --icons
+or
+.B --icons=auto.
+Useful for if you always want to have icons enabled.
+
+Any explicit use of the
+.B --icons=WHEN
+flag overrides this behavior.
+
+.SS EZA_STDIN_SEPARATOR
+
+Specifies the separator to use when file names are piped from stdin. Defaults to newline.
+
+.SS EZA_CONFIG_DIR
+
+Specifies the directory where eza will look for its configuration and theme files. Defaults to
+.B $XDG_CONFIG_HOME/eza
+or
+.B $HOME/.config/eza
+if
+.B XDG_CONFIG_HOME
+is not set.
+
+
+.SH EXIT STATUSES
+.TP
+0
+If everything goes OK.
+.TP
+1
+If there was an I/O error during operation.
+.TP
+3
+If there was a problem with the command-line arguments.
+

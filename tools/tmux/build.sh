@@ -1,6 +1,5 @@
 #!/bin/bash
-path=$(realpath $0)
-dir=${path%/*}
+dir=$(dirname $0)
 
 docker build -t tmux:3.4 $dir &&
 docker run -itd --name ioub --rm tmux:3.4 &&
