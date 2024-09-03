@@ -1,3 +1,3 @@
-path=$(realpath $0)
-cp ${path%/*}/.[!.]* $HOME
+dir=$(dirname $0)
+cp $dir/.[!.]* $HOME
 
