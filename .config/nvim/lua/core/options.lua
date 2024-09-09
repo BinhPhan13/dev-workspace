@@ -1,9 +1,9 @@
-vim.cmd("let g:netrw_liststyle = 3")
-vim.cmd("let g:loaded_matchparen = 1")
-vim.cmd("colorscheme default")
+vim.g.netrw_liststyle = 0
+vim.g.loaded_matchparen = 1
 
 local opt = vim.opt
 
+-- number
 opt.number = true
 opt.relativenumber = true
 
@@ -15,13 +15,14 @@ opt.autoindent = true
 opt.smartindent = true
 
 -- search
-opt.wrap = true
-opt.wrapscan = false
+opt.wrap = false
+opt.wrapscan = true
 opt.incsearch = true
-opt.hlsearch = true
+opt.hlsearch = false
 
 -- case
 opt.ignorecase = true
+
 opt.smartcase = true
 opt.wildignorecase = true
 
@@ -30,17 +31,19 @@ opt.splitright = true
 opt.splitbelow = true
 
 -- whitespace display
-vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+opt.list = true
+opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- misc
--- opt.clipboard:append("unnamedplus")
 opt.termguicolors = true
-opt.cursorline = true
 opt.mouse = 'a'
-opt.signcolumn = "yes"
-opt.scrolloff = 7
-opt.inccommand = 'split'
-opt.backspace = "indent,eol,start"
+opt.guicursor = ''
+opt.cursorline= true
+opt.colorcolumn = '81'
+opt.signcolumn = 'no'
+opt.scrolloff = 3
+opt.inccommand = 'nosplit'
+opt.backspace = 'indent,eol,start'
 opt.swapfile = false
+opt.timeoutlen = 3000
 

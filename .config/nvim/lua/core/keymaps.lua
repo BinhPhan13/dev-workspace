@@ -1,24 +1,28 @@
 vim.g.mapleader = " "
-local keymap = vim.keymap
 
-keymap.set("n", "<Esc>", ":nohls<CR>", { desc = "clear search highlights" })
+vim.keymap.set("n", "<Esc>", vim.cmd.nohls)
+vim.keymap.set("n", "<leader>e", vim.cmd.Ex)
+vim.keymap.set("n", "J", "J^")
+vim.keymap.set("n", "Q", "<nop>")
+vim.keymap.set("n", "<leader>s", ":%s/<C-r><C-w>/<C-r><C-w>/g<Left><Left>")
+vim.keymap.set("n", "<C-p>", "m'gpkV''j")
+
+vim.keymap.set("x", "<leader>p", "\"_dP")
+vim.keymap.set("x", "<leader>d", "\"_d")
+
+-- smooth jumping
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
+vim.keymap.set("n", "n", "nzzzv")
+vim.keymap.set("n", "N", "Nzzzv")
 
 -- window management
-keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
-keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
-keymap.set("n", "<leader>s=", "<C-w>=", { desc = "Make splits equal size" })
-keymap.set("n", "<leader>sx", ":close<CR>", { desc = "Close current split" })
+vim.keymap.set("n", "<leader>wv", "<C-w>v")
+vim.keymap.set("n", "<leader>wh", "<C-w>s")
+vim.keymap.set("n", "<leader>wx", "<C-w>c")
 
-keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-
--- tab management
-keymap.set("n", "<leader>to", ":tabnew<CR>", { desc = "Open new tab" })
-keymap.set("n", "<leader>tx", ":tabclose<CR>", { desc = "Close current tab" })
-keymap.set("n", "<leader>tn", "gt", { desc = "Go to next tab" })
-keymap.set("n", "<leader>tp", "gT", { desc = "Go to prev tab" })
-keymap.set("n", "<leader>tl", "g<Tab>", { desc = "Go to last tab" })
-keymap.set("n", "<leader>tf", ":tabnew %<CR>", { desc = "Open current buffer in new tab" })
+vim.keymap.set("n", "<C-h>", "<C-w><C-h>")
+vim.keymap.set("n", "<C-l>", "<C-w><C-l>")
+vim.keymap.set("n", "<C-j>", "<C-w><C-j>")
+vim.keymap.set("n", "<C-k>", "<C-w><C-k>")
 
