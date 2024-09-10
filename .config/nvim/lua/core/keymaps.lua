@@ -8,6 +8,7 @@ vim.keymap.set("n", "Q", "<nop>")
 
 vim.keymap.set("n", "<leader><Tab>", "<C-6>")
 vim.keymap.set("n", "<leader>c", ":lc")
+vim.keymap.set("n", "<leader>bd", vim.cmd.bw)
 
 -- replace word under cursor globally
 vim.keymap.set("n", "<leader>s", ":%s/<C-r><C-w>/<C-r><C-w>/g<Left><Left>")
@@ -20,10 +21,10 @@ vim.keymap.set("x", "<leader>p", "\"_dP")
 vim.keymap.set("x", "<leader>d", "\"_d")
 
 -- smooth jumping
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
+vim.keymap.set("n", "<C-d>", "<C-d>zt")
+vim.keymap.set("n", "<C-u>", "<C-u>zt")
+vim.keymap.set("n", "n", "nzt")
+vim.keymap.set("n", "N", "Nzt")
 
 -- window management
 vim.keymap.set("n", "<leader>wv", "<C-w>v")

@@ -32,11 +32,6 @@ local objects = {
       ["]b"] = "@block.outer",
       ["]a"] = "@parameter.inner",
       ["]f"] = "@function.outer",
-
-      -- Below example nvim-treesitter's `locals.scm` and `folds.scm`.
-      -- They also provide highlights.scm and indent.scm.
-      ["]s"] = "@scope",
-      ["]z"] = "@fold",
     },
     goto_next_end = {
       ["]B"] = "@block.outer",
