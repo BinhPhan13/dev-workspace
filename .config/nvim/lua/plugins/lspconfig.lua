@@ -7,7 +7,8 @@ local function config()
 
       vim.diagnostic.config({
         virtual_text = false,
-        underline = false,
+        underline = true,
+        signs = false,
       })
 
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
