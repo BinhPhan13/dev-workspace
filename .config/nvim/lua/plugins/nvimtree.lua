@@ -35,6 +35,9 @@ local function config()
     on_attach = on_attach,
     hijack_cursor = true,
     sync_root_with_cwd = true,
+    actions = {
+      change_dir = { global = true }
+    }
   })
 end
 

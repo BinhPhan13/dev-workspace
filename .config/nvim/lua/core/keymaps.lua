@@ -10,6 +10,10 @@ vim.keymap.set("n", "<leader><Tab>", "<C-6>")
 vim.keymap.set("n", "<leader>c", ":cd")
 vim.keymap.set("n", "<leader>bd", vim.cmd.bw)
 
+-- terminal mode
+vim.keymap.set("n", "<leader>T", vim.cmd.term)
+vim.keymap.set("t", "<leader>\\", "<C-\\><C-n>")
+
 -- replace word under cursor globally
 vim.keymap.set("n", "<leader>s", ":%s/<C-r><C-w>/<C-r><C-w>/g<Left><Left>")
 
