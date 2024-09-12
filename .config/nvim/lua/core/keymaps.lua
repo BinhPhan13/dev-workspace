@@ -8,7 +8,14 @@ vim.keymap.set("n", "Q", "<nop>")
 
 vim.keymap.set("n", "<leader><Tab>", "<C-6>")
 vim.keymap.set("n", "<leader>c", ":cd")
+
+-- wipe out buffers
 vim.keymap.set("n", "<leader>bd", vim.cmd.bw)
+vim.keymap.set("n", "<leader>bD", function() vim.cmd("%bw") end)
+
+-- move lines in Visual mode
+vim.keymap.set("x", "K", ":move '<-2<CR>gv")
+vim.keymap.set("x", "J", ":move '>+1<CR>gv")
 
 -- terminal mode
 vim.keymap.set("n", "<leader>T", vim.cmd.term)
