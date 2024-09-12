@@ -1,6 +1,3 @@
-vim.g.netrw_liststyle = 0
-vim.g.loaded_matchparen = 1
-
 local opt = vim.opt
 
 -- number
