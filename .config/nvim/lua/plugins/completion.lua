@@ -1,14 +1,14 @@
 local function config()
-  local cmp = require('cmp')
+  local cmp = require("cmp")
   cmp.setup({
     window = {
       completion = cmp.config.window.bordered(),
       documentation = cmp.config.window.bordered(),
     },
     sources = {
-      { name = 'nvim_lsp' },
-      { name = 'path' },
-      { name = 'buffer',
+      { name = "nvim_lsp" },
+      { name = "path" },
+      { name = "buffer",
         option = {
           get_bufnrs = function()
             return vim.api.nvim_list_bufs()
@@ -26,25 +26,25 @@ local function config()
     }),
   })
 
-  cmp.setup.cmdline('/', {
+  cmp.setup.cmdline("/", {
     mapping = cmp.mapping.preset.cmdline(),
     sources = {
-      { name = 'buffer' }
+      { name = "buffer" }
     }
   })
 
-  cmp.setup.cmdline(':', {
+  cmp.setup.cmdline(":", {
     mapping = cmp.mapping.preset.cmdline(),
     sources = {
-      { name = 'cmdline' },
-      { name = 'buffer' },
-      { name = 'path' },
+      { name = "cmdline" },
+      { name = "buffer" },
+      { name = "path" },
     }
   })
 end
 
 return {
-  'hrsh7th/nvim-cmp', tag = 'v0.0.1',
+  "hrsh7th/nvim-cmp", tag = "v0.0.1",
   dependencies = {
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-buffer",

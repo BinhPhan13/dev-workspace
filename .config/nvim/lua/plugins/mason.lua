@@ -21,9 +21,9 @@ local function config()
 end
 
 return {
-  {'williamboman/mason-lspconfig.nvim', tag = 'v1.30.0'},
+  {"williamboman/mason-lspconfig.nvim", tag = "v1.30.0"},
   {
-    'williamboman/mason.nvim', tag = 'v1.10.0',
+    "williamboman/mason.nvim", tag = "v1.10.0",
     config = config
   },
 }

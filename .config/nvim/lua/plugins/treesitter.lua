@@ -1,5 +1,5 @@
 local function config()
-  configs = require('nvim-treesitter.configs')
+  configs = require("nvim-treesitter.configs")
   configs.setup({
     ensure_installed = {
       -- MUST installed
@@ -43,7 +43,7 @@ local function config()
 end
 
 return {
-  "nvim-treesitter/nvim-treesitter", tag = 'v0.9.2',
+  "nvim-treesitter/nvim-treesitter", tag = "v0.9.2",
   build = ":TSUpdate",
   config = config
 }

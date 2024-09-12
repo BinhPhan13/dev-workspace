@@ -31,15 +31,15 @@ opt.splitbelow = true
 
 -- whitespace display
 opt.list = true
-opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 -- misc
 opt.termguicolors = true
-opt.mouse = 'a'
-opt.guicursor = ''
+opt.mouse = "a"
+opt.guicursor = ""
 opt.scrolloff = 3
-opt.inccommand = 'nosplit'
-opt.backspace = 'indent,eol,start'
+opt.inccommand = "nosplit"
+opt.backspace = "indent,eol,start"
 opt.swapfile = false
 opt.timeoutlen = 3000
 

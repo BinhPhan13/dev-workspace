@@ -1,5 +1,5 @@
 return {
-  'lucastavaresa/simpleIndentGuides.nvim',
+  "lucastavaresa/simpleIndentGuides.nvim",
   config = function()
     indent = require("simpleIndentGuides").setup()
   end
