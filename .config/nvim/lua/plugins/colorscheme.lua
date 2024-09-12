@@ -5,5 +5,8 @@ return {
   opts = {},
   config = function()
     vim.cmd.colorscheme('tokyonight-night')
+    vim.opt.cursorline = true
+    vim.opt.colorcolumn = '81'
+    vim.opt.signcolumn = 'yes'
   end
 }

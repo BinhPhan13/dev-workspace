@@ -22,7 +22,6 @@ opt.hlsearch = false
 
 -- case
 opt.ignorecase = true
-
 opt.smartcase = true
 opt.wildignorecase = true
 
@@ -38,9 +37,6 @@ opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 opt.termguicolors = true
 opt.mouse = 'a'
 opt.guicursor = ''
-opt.cursorline= true
-opt.colorcolumn = '81'
-opt.signcolumn = 'yes'
 opt.scrolloff = 3
 opt.inccommand = 'nosplit'
 opt.backspace = 'indent,eol,start'
