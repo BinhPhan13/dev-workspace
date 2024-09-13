@@ -48,5 +48,6 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = config
   }
+  vim.keymap.set("n", "<leader>e", vim.cmd.NvimTreeToggle)
 }
 

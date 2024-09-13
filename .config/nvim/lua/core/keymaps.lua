@@ -2,7 +2,6 @@ vim.g.mapleader = " "
 
 -- misc
 vim.keymap.set("n", "<Esc>", vim.cmd.nohls)
-vim.keymap.set("n", "<leader>e", vim.cmd.NvimTreeToggle)
 vim.keymap.set("n", "J", "J^")
 vim.keymap.set("n", "Q", "<nop>")
 
