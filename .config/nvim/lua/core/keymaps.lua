@@ -2,12 +2,12 @@ vim.g.mapleader = " "
 
 -- misc
 vim.keymap.set("n", "<Esc>", vim.cmd.nohls)
-vim.keymap.set("n", "<leader>e", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>e", vim.cmd.NvimTreeToggle)
 vim.keymap.set("n", "J", "J^")
 vim.keymap.set("n", "Q", "<nop>")
 
 vim.keymap.set("n", "<leader><Tab>", "<C-6>")
-vim.keymap.set("n", "<leader>c", ":lc")
+vim.keymap.set("n", "<leader>c", ":cd")
 vim.keymap.set("n", "<leader>bd", vim.cmd.bw)
 
 -- replace word under cursor globally
