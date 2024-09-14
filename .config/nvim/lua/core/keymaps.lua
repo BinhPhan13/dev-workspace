@@ -7,6 +7,12 @@ vim.keymap.set("n", "Q", "<nop>")
 
 vim.keymap.set("n", "<leader><Tab>", "<C-6>")
 vim.keymap.set("n", "<leader>c", ":cd")
+vim.keymap.set("n", "<leader>C", function()
+  bufpath = vim.api.nvim_buf_get_name(0)
+  dirpath = vim.fn.fnamemodify(bufpath, ":h")
+  print(dirpath)
+  vim.cmd.cd(dirpath)
+end)
 
 -- wipe out buffers
 vim.keymap.set("n", "<leader>bd", vim.cmd.bw)
