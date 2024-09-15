@@ -1,10 +1,12 @@
 local function config()
   local builtin = require("telescope.builtin")
-  vim.keymap.set("n", "<leader>ff", builtin.find_files)
-  vim.keymap.set("n", "<leader>fb", builtin.buffers)
-  vim.keymap.set("n", "<leader>fh", builtin.help_tags)
-  vim.keymap.set("n", "<leader>fp", builtin.live_grep)
-  vim.keymap.set("n", "<leader>fs", builtin.grep_string)
+  vim.keymap.set("n", "tf", builtin.find_files)
+  vim.keymap.set("n", "tb", builtin.buffers)
+  vim.keymap.set("n", "th", builtin.help_tags)
+  vim.keymap.set("n", "tp", builtin.live_grep)
+  vim.keymap.set("n", "ts", builtin.grep_string)
+  vim.keymap.set("n", "td", builtin.diagnostics)
+  vim.keymap.set("n", "tr", builtin.lsp_references)
 end
 
 return {

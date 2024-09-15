@@ -2,8 +2,7 @@ local function config()
   vim.api.nvim_create_autocmd("LspAttach", {
     desc = "LSP actions",
     callback = function(event)
-      local tele = require("telescope.builtin")
-      local opts = {buffer = event.buf}
+      local opts = { buffer = event.buf }
 
       vim.diagnostic.config({
         virtual_text = false,
@@ -13,15 +12,13 @@ local function config()
 
       vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-      vim.keymap.set("n", "<leader>fr", tele.lsp_references, opts)
-      vim.keymap.set("n", "gs", vim.lsp.buf.rename, opts)
+      vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, opts)
 
       vim.keymap.set("n", "[d", function()
         vim.diagnostic.goto_prev({ float = false }) end, opts)
       vim.keymap.set("n", "]d", function()
         vim.diagnostic.goto_next({ float = false }) end, opts)
       vim.keymap.set("n", "<leader>?", vim.diagnostic.open_float, opts)
-      vim.keymap.set("n", "<leader>fd", tele.diagnostics, opts)
 
       vim.keymap.set({"n", "x"}, "<F3>", vim.lsp.buf.code_action, opts)
     end,

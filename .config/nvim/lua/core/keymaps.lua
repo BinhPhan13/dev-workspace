@@ -23,11 +23,11 @@ vim.keymap.set("x", "K", ":move '<-2<CR>gv")
 vim.keymap.set("x", "J", ":move '>+1<CR>gv")
 
 -- terminal mode
-vim.keymap.set("n", "<leader>T", vim.cmd.term)
+vim.keymap.set("n", "T", vim.cmd.term)
 vim.keymap.set("t", "<leader>\\", "<C-\\><C-n>")
 
 -- replace word under cursor globally
-vim.keymap.set("n", "<leader>s", ":%s/<C-r><C-w>/<C-r><C-w>/g<Left><Left>")
+vim.keymap.set("n", "S", ":%s/<C-r><C-w>/<C-r><C-w>/g<Left><Left>")
 
 -- paste and select the pasted text
 vim.keymap.set("n", "<C-p>", "mzgpkV'zj")

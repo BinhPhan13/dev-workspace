@@ -1,11 +1,11 @@
 local function config()
-  vim.keymap.set("n",        "<leader>l", "<Plug>(leap)")
-  vim.keymap.set("n",        "<leader>L", "<Plug>(leap-from-window)")
-  vim.keymap.set({"x", "o"}, "<leader>l", "<Plug>(leap-forward)")
-  vim.keymap.set({"x", "o"}, "<leader>L", "<Plug>(leap-backward)")
+  vim.keymap.set("n",        "f", "<Plug>(leap)")
+  vim.keymap.set("n",        "F", "<Plug>(leap-from-window)")
+  vim.keymap.set({"x", "o"}, "f", "<Plug>(leap-forward)")
+  vim.keymap.set({"x", "o"}, "F", "<Plug>(leap-backward)")
 
-  require("leap").opts.equivalence_classes = { " \t\r\n", "([{", ")]}", "'\"`" }
-  require("leap.user").set_repeat_keys("<enter>", "<backspace>")
+  require("leap").opts.equivalence_classes = { " \t\r\n", "([{<", ")]}>", "'\"`" }
+  require("leap.user").set_repeat_keys(";", ",")
 end
 
 return {
