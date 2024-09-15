@@ -3,63 +3,67 @@ local objects = {
     enable = true,
     lookahead = true,
     keymaps = {
-      ["ib"] = "@block.inner",
-      ["ab"] = "@block.outer",
-      ["ia"] = "@parameter.inner",
-      ["aa"] = "@parameter.outer",
+      ["ia"] = "@assignment.inner",
+      ["aa"] = "@assignment.outer",
+
+      ["iv"] = "@parameter.inner",
+      ["av"] = "@parameter.outer",
+
+      ["ii"] = "@block.inner",
+      ["ai"] = "@block.outer",
+
       ["if"] = "@function.inner",
       ["af"] = "@function.outer",
-      ["i0"] = "@number.inner",
+
+      ["in"] = "@number.inner",
     }
   },
   swap = {
     enable = true,
     swap_next = {
-      ["<leader>>b"] = "@block.outer",
-      ["<leader>>a"] = "@parameter.inner",
+      ["<leader>>a"] = "@assignment.inner",
+      ["<leader>>v"] = "@parameter.inner",
+      ["<leader>>i"] = "@block.outer",
       ["<leader>>f"] = "@function.outer",
+      ["<leader>>n"] = "@number.inner",
     },
     swap_previous = {
-      ["<leader><b"] = "@block.outer",
-      ["<leader><a"] = "@parameter.inner",
+      ["<leader><a"] = "@assignment.inner",
+      ["<leader><v"] = "@parameter.inner",
+      ["<leader><i"] = "@block.outer",
       ["<leader><f"] = "@function.outer",
+      ["<leader><n"] = "@number.inner",
     },
   },
   move = {
     enable = true,
     set_jumps = true,
     goto_next_start = {
-      ["]b"] = "@block.outer",
-      ["]a"] = "@parameter.inner",
-      ["]f"] = "@function.outer",
+      ["[a"] = "@assignment.inner",
+      ["[v"] = "@parameter.inner",
+      ["[i"] = "@block.outer",
+      ["[f"] = "@function.outer",
+      ["[n"] = "@number.inner",
     },
     goto_next_end = {
-      ["]B"] = "@block.outer",
-      ["]A"] = "@parameter.inner",
-      ["]F"] = "@function.outer",
-    },
-    goto_previous_start = {
-      ["[b"] = "@block.outer",
-      ["[a"] = "@parameter.inner",
-      ["[f"] = "@function.outer",
-    },
-    goto_previous_end = {
-      ["[B"] = "@block.outer",
-      ["[A"] = "@parameter.inner",
-      ["[F"] = "@function.outer",
+      ["]a"] = "@assignment.inner",
+      ["]v"] = "@parameter.inner",
+      ["]i"] = "@block.outer",
+      ["]f"] = "@function.outer",
+      ["]n"] = "@number.inner",
     },
   }
 }
 
 local function config()
-  configs = require("nvim-treesitter.configs")
+  local configs = require("nvim-treesitter.configs")
   configs.setup({
     textobjects = objects,
   })
 
   local ts_repeat = require("nvim-treesitter.textobjects.repeatable_move")
-  vim.keymap.set({ "n", "x", "o" }, "<leader>;", ts_repeat.repeat_last_move)
-  vim.keymap.set({ "n", "x", "o" }, "<leader>,", ts_repeat.repeat_last_move_opposite)
+  vim.keymap.set({ "n", "x", "o" }, "<C-j>", ts_repeat.repeat_last_move)
+  vim.keymap.set({ "n", "x", "o" }, "<C-k>", ts_repeat.repeat_last_move_opposite)
 end
 
 return {

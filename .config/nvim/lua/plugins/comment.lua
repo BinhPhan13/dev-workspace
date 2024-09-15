@@ -1,5 +1,5 @@
 local function config()
-  comment = require("Comment")
+  local comment = require("Comment")
   comment.setup({
     padding = true,
     sticky = true,
