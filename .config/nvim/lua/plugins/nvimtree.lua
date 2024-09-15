@@ -36,7 +36,8 @@ local function config()
     hijack_cursor = true,
     sync_root_with_cwd = true,
     actions = {
-      change_dir = { global = true }
+      change_dir = { global = true },
+      open_file = { quit_on_open = true },
     }
   })
   vim.keymap.set("n", "<leader>e", vim.cmd.NvimTreeToggle)
