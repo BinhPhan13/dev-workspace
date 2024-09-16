@@ -53,7 +53,10 @@ vim.keymap.set("n", "<C-j>", "<C-w><C-j>")
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>")
 
 -- tab management
-vim.keymap.set("n", "<leader>to", vim.cmd.tabnew)
+vim.keymap.set("n", "<leader>to", function()
+  bufpath = vim.api.nvim_buf_get_name(0)
+  vim.cmd.tabe(bufpath)
+end)
 vim.keymap.set("n", "<leader>tx", vim.cmd.tabclose)
 vim.keymap.set("n", "<leader>tp", function() vim.cmd("silent! -tabm") end)
 vim.keymap.set("n", "<leader>tn", function() vim.cmd("silent! +tabm") end)
