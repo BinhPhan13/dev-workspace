@@ -10,5 +10,7 @@ tar xf hic -C $HOME/.local/
 mv $HOME/.local/zen{,-browser}
 rm hic
 
+mkdir -p $HOME/.local/bin/
+rm -f $HOME/.local/bin/zen
 ln -s $HOME/.local/{zen-browser,bin}/zen
 
