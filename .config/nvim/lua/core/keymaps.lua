@@ -1,11 +1,11 @@
 vim.g.mapleader = " "
 
 -- misc
-vim.keymap.set("n", "<Esc>", vim.cmd.nohls)
-vim.keymap.set("n", "J", "J^")
+vim.keymap.set("n", "<Esc>", ":<BS>")
 vim.keymap.set("n", "Q", "<nop>")
-
 vim.keymap.set("n", "<leader><Tab>", "<C-6>")
+
+-- chdir
 vim.keymap.set("n", "<leader>c", ":cd")
 vim.keymap.set("n", "<leader>C", function()
   bufpath = vim.api.nvim_buf_get_name(0)
@@ -15,15 +15,11 @@ vim.keymap.set("n", "<leader>C", function()
 end)
 
 -- wipe out buffers
-vim.keymap.set("n", "<leader>bd", vim.cmd.bw)
-vim.keymap.set("n", "<leader>bD", function() vim.cmd("%bw") end)
-
--- move lines in Visual mode
-vim.keymap.set("x", "K", ":move '<-2<CR>gv")
-vim.keymap.set("x", "J", ":move '>+1<CR>gv")
+vim.keymap.set("n", "<leader>bd", vim.cmd.bd)
+vim.keymap.set("n", "<leader>bD", function() vim.cmd("%bd") end)
 
 -- terminal mode
-vim.keymap.set("n", "T", vim.cmd.term)
+vim.keymap.set("n", "<leader>T", vim.cmd.term)
 vim.keymap.set("t", "<leader>\\", "<C-\\><C-n>")
 
 -- replace word under cursor globally

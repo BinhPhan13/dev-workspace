@@ -1,5 +1,5 @@
 local function config()
-  require("nvim-surround").setup {
+  require("nvim-surround").setup({
     keymaps = {
       insert = "<C-s>",
       normal = "s",
@@ -8,14 +8,26 @@ local function config()
     },
     aliases = {
       ["a"] = ">",
-      ["b"] = ")",
-      ["B"] = "}",
+      ["p"] = ")",
+      ["c"] = "}",
       ["r"] = "]",
+      ["b"] = { "}", "]", ")", ">" },
+
+      ["A"] = "<",
+      ["P"] = "(",
+      ["C"] = "{",
+      ["R"] = "[",
+      ["B"] = { "<", "(", "{", "[" },
+
+      ["j"] = '"',
+      ["k"] = "'",
+      ["l"] = "`",
       ["q"] = { '"', "'", "`" },
+
       ["s"] = { "}", "]", ")", ">", '"', "'", "`" },
     },
     indent_lines = false
-  }
+  })
 end
 
 return {

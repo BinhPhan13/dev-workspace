@@ -30,8 +30,7 @@ local function config()
   vim.g.loaded_netrw = 1
   vim.g.loaded_netrwPlugin = 1
 
-  local nvimtree = require("nvim-tree")
-  nvimtree.setup({
+  require("nvim-tree").setup({
     on_attach = on_attach,
     hijack_cursor = true,
     sync_root_with_cwd = true,

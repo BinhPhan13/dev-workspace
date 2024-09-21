@@ -28,8 +28,7 @@ local function on_attach(bufnr)
   map("n", "<leader>hv", gs.preview_hunk_inline)
   map("n", "<leader>hV", gs.toggle_deleted)
 
-  map("n", "<leader>hd", gs.diffthis)
-  map("n", "<leader>hD", function() gs.diffthis("~") end)
+  map("n", "<leader>hd", function() gs.diffthis("~") end)
 end
 
 local function config()

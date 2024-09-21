@@ -17,12 +17,15 @@ local function config()
       },
     },
     mapping = cmp.mapping.preset.insert({
-      ["<C-u>"] = cmp.mapping.scroll_docs(-4),
-      ["<C-d>"] = cmp.mapping.scroll_docs(4),
+      ["<C-u>"] = cmp.mapping.scroll_docs(-3),
+      ["<C-d>"] = cmp.mapping.scroll_docs(3),
+
       ["<S-Tab>"] = cmp.mapping.select_prev_item(),
       ["<Tab>"] = cmp.mapping.select_next_item(),
       ["<C-space>"] = cmp.mapping.complete(),
-      ["<C-z>"] = cmp.mapping.abort(),
+
+      ["<C-e>"] = cmp.mapping.abort(),
+      ["<C-y>"] = cmp.mapping.confirm(),
     }),
   })
 
@@ -38,7 +41,6 @@ local function config()
     sources = {
       { name = "cmdline" },
       { name = "buffer" },
-      { name = "path" },
     }
   })
 end

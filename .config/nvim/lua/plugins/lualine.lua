@@ -1,7 +1,7 @@
 local sections = {
   lualine_a = { "mode" },
   lualine_b = { "hostname" },
-  lualine_c = { "%f %m%r" },
+  lualine_c = { "%{fnamemodify(expand('%'), ':~:.')} %m%r" },
 
   lualine_x = { "filetype" },
   lualine_y = { "branch" },
@@ -9,10 +9,9 @@ local sections = {
 }
 
 local function config()
-  local lualine = require("lualine")
-  lualine.setup {
+  require("lualine").setup({
     sections = sections
-  }
+  })
 
   vim.opt.showmode = false
   vim.opt.laststatus = 3

@@ -1,6 +1,5 @@
 local function config()
-  local configs = require("nvim-treesitter.configs")
-  configs.setup({
+  require("nvim-treesitter.configs").setup({
     ensure_installed = {
       -- MUST installed
       "markdown_inline",
@@ -10,6 +9,7 @@ local function config()
       "vim",
       "lua",
       "c",
+
       "python",
     },
     sync_install = false,
@@ -36,7 +36,7 @@ local function config()
         init_selection = "<C-s>",
         node_incremental = "<C-s>",
         scope_incremental = false,
-        node_decremental = "<bs>",
+        node_decremental = "<BS>",
       }
     },
   })
