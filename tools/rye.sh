@@ -15,3 +15,6 @@ eval $cmd
 mkdir -p $HOME/.local/share/bash-completion/completions/
 rye self completion > $HOME/.local/share/bash-completion/completions/rye.bash
 
+rye config --set-bool behavior.use-uv=true
+rye config --set-bool behavior.global-python=true
+
