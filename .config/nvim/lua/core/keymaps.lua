@@ -15,8 +15,8 @@ vim.keymap.set("n", "<leader>C", function()
 end)
 
 -- wipe out buffers
-vim.keymap.set("n", "<leader>bd", vim.cmd.bd)
-vim.keymap.set("n", "<leader>bD", function() vim.cmd("%bd") end)
+vim.keymap.set("n", "<leader>bd", vim.cmd.bw)
+vim.keymap.set("n", "<leader>bD", function() vim.cmd("%bw") end)
 
 -- terminal mode
 vim.keymap.set("n", "<leader>T", vim.cmd.term)
