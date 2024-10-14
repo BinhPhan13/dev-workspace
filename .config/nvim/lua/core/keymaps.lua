@@ -62,3 +62,18 @@ vim.keymap.set("n", "<leader>bd", function()
 end)
 vim.keymap.set("n", "<leader>bD", function() vim.cmd("%bw") end)
 
+-- text objects
+vim.keymap.set({"x", "o"}, "ic", "iB")
+vim.keymap.set({"x", "o"}, "ac", "aB")
+vim.keymap.set({"x", "o"}, "ir", "i[")
+vim.keymap.set({"x", "o"}, "ar", "a[")
+vim.keymap.set({"x", "o"}, "il", "i<")
+vim.keymap.set({"x", "o"}, "al", "a<")
+
+vim.keymap.set({"x", "o"}, "ij", "i\"")
+vim.keymap.set({"x", "o"}, "aj", "a\"")
+vim.keymap.set({"x", "o"}, "ik", "i\'")
+vim.keymap.set({"x", "o"}, "ak", "a\'")
+vim.keymap.set({"x", "o"}, "iz", "i`")
+vim.keymap.set({"x", "o"}, "az", "a`")
+
