@@ -4,6 +4,8 @@ vim.g.mapleader = " "
 vim.keymap.set("n", "<Esc>", ":<BS>")
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<leader><Tab>", "<C-6>")
+vim.keymap.set("n", "<M-k>", "{")
+vim.keymap.set("n", "<M-j>", "}")
 
 -- chdir
 vim.keymap.set("n", "<leader>c", ":cd")

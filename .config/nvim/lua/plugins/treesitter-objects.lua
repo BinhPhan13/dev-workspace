@@ -67,7 +67,7 @@ local function config()
 end
 
 return {
-  "nvim-treesitter/nvim-treesitter-textobjects",
-  config = config
+  -- "nvim-treesitter/nvim-treesitter-textobjects",
+  -- config = config
 }
 
