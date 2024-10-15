@@ -18,3 +18,5 @@ cp $dir/fd.1 $HOME/.local/share/man/man1/
 mkdir -p $HOME/.local/share/bash-completion/completions/
 cp $dir/autocomplete/fd.bash $HOME/.local/share/bash-completion/completions/
 
+rm -rf $dir
+
