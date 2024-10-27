@@ -10,11 +10,7 @@ local function config()
 end
 
 return {
-  { "nvim-lua/plenary.nvim", tag = "v0.1.4"},
-  {
-    "nvim-telescope/telescope.nvim", tag = "0.1.8",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = config
-  }
+  "nvim-telescope/telescope.nvim", tag = "0.1.8",
+  config = config
 }
 

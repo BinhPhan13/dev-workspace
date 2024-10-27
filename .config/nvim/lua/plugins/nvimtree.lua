@@ -43,11 +43,7 @@ local function config()
 end
 
 return {
-  { "nvim-tree/nvim-web-devicons", tag = "v0.100" },
-  {
-    "nvim-tree/nvim-tree.lua", tag = "v1.5.0",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = config
-  }
+  "nvim-tree/nvim-tree.lua", tag = "v1.5.0",
+  config = config
 }
 
