@@ -8,7 +8,7 @@ local function config()
     show_tab_indicators = false,
 
     show_buffer_close_icons = false,
-    show_duplicate_prefix = false,
+    show_duplicate_prefix = true,
 
     close_command = nil,
     right_mouse_command = nil,
