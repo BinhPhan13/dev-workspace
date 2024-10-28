@@ -59,7 +59,7 @@ vim.keymap.set("n", "<M-l>", function() pcall(vim.cmd, "+tabm") end)
 
 -- buffer
 vim.keymap.set("n", "<leader>bd", function()
-  ok, _ = pcall(vim.cmd, "bn | bw #")
+  ok, _ = pcall(vim.cmd, "bp | bw #")
   if not ok then pcall(vim.cmd, "enew | bw #") end
 end)
 vim.keymap.set("n", "<leader>bD", function() vim.cmd("%bw") end)
