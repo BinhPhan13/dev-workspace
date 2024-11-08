@@ -11,6 +11,7 @@ local function config()
       "c",
 
       "python",
+      "sql",
     },
     sync_install = false,
     auto_install = false,
