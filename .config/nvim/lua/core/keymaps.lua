@@ -54,14 +54,13 @@ vim.keymap.set("n", "<leader>to", function()
 end)
 vim.keymap.set("n", "<leader>tx", function() pcall(vim.cmd.tabc) end)
 
-vim.keymap.set("n", "<M-h>", function() pcall(vim.cmd, "-tabm") end)
-vim.keymap.set("n", "<M-l>", function() pcall(vim.cmd, "+tabm") end)
+vim.keymap.set("n", "<M-h>", function() pcall(vim.cmd, "tabn") end)
+vim.keymap.set("n", "<M-l>", function() pcall(vim.cmd, "tabp") end)
+vim.keymap.set("n", "<C-M-h>", function() pcall(vim.cmd, "-tabm") end)
+vim.keymap.set("n", "<C-M-l>", function() pcall(vim.cmd, "+tabm") end)
 
 -- buffer
-vim.keymap.set("n", "<leader>bd", function()
-  ok, _ = pcall(vim.cmd, "bp | bw #")
-  if not ok then pcall(vim.cmd, "enew | bw #") end
-end)
+vim.keymap.set("n", "<leader>bd", function() vim.cmd("bw") end)
 vim.keymap.set("n", "<leader>bD", function() vim.cmd("%bw") end)
 
 -- text objects
