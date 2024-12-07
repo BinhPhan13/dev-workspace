@@ -94,5 +94,5 @@ addpath /sbin
 addpath /usr/sbin
 
 # default visual editor
-export VISUAL=nvim
+export VISUAL=vi
 
