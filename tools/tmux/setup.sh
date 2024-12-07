@@ -17,7 +17,3 @@ mv tmux.bash $HOME/.local/share/bash-completion/completions/
 rm -rf $HOME/.local/tmux-plugins/
 git clone https://github.com/tmux-plugins/tpm $HOME/.local/tmux-plugins/
 
-mkdir -p $HOME/.config/
-rm -rf $HOME/.config/tmux/
-cp -r $dir/../../.config/tmux/ $HOME/.config/
-

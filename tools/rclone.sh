@@ -1,6 +1,6 @@
 #!/bin/bash
 which rclone && exit 1
-which unzip || ( echo "no unzip!" ; exit 1 )
+if ! which unzip; then echo "no unzip!"; exit 1; fi
 
 url="https://github.com/rclone/rclone/releases/download/
     v1.68.2/rclone-v1.68.2-linux-amd64.zip"
