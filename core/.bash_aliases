@@ -13,3 +13,7 @@ alias .3='cd ../../..'
 alias .4='cd ../../../..'
 alias .5='cd ../../../../..'
 
+# misc
+alias tat='tmux attach'
+alias tpi='watch -n1 ping -c1 github.com'
+
