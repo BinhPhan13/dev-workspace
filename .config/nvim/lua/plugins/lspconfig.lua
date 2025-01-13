@@ -44,9 +44,12 @@ local function config()
       autoImportCompletions = true,
       autoSearchPaths = true,
       useLibraryCodeForTypes = true,
+
+      typeCheckingMode = "standard",
+      diagnosticMode = "openFilesOnly",
     },
   }
-  local opts = { settings = { basedpyright = opts }, autostart = false }
+  local opts = { settings = { basedpyright = opts } }
   setup_lsp("basedpyright", opts)
 
   -- ruff
