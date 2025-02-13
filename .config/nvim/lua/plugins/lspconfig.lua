@@ -34,8 +34,14 @@ local function config()
 
   ------------------------------ LSPs ------------------------------
   local mason = require("mason-registry")
+
+  local lsp_mapping = {}
+  lsp_mapping["lua-language-server"] = "lua_ls"
+
   local function setup_lsp(name, opts)
-    if mason.is_installed(name) then lsp[name].setup(opts) end
+    local lsp_name = lsp_mapping[name]
+    if lsp_name == nil then lsp_name = name end
+    if mason.is_installed(name) then lsp[lsp_name].setup(opts) end
   end
 
   -- basedpyright
