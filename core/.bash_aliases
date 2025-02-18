@@ -18,5 +18,6 @@ alias tat='tmux attach'
 alias tpi='watch -n1 ping -c1 github.com'
 alias dk='docker'
 alias dc='docker compose'
+alias dcub='docker compose up --build'
 alias lg='lazygit'
 
