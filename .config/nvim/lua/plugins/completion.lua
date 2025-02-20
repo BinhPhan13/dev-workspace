@@ -46,7 +46,7 @@ local function config()
 end
 
 return {
-  "hrsh7th/nvim-cmp", tag = "v0.0.1",
+  "hrsh7th/nvim-cmp",
   dependencies = {
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-buffer",

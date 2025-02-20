@@ -10,7 +10,7 @@ local function config()
 end
 
 return {
-  "nvim-telescope/telescope.nvim", tag = "0.1.8",
+  "nvim-telescope/telescope.nvim",
   config = config
 }
 

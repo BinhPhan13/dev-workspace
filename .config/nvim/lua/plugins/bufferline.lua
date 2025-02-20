@@ -23,7 +23,7 @@ local function config()
 end
 
 return {
-  "akinsho/bufferline.nvim", tag = "v4.7.0",
+  "akinsho/bufferline.nvim",
   config = config
 }
 

@@ -69,7 +69,7 @@ local function config()
 end
 
 return {
-  "neovim/nvim-lspconfig", tag = "v0.1.8",
+  "neovim/nvim-lspconfig",
   config = config
 }
 

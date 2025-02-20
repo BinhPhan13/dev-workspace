@@ -1,5 +1,5 @@
 return {
-  "catppuccin/nvim", name = "catppuccin", tag = "v1.7.0",
+  "catppuccin/nvim", name = "catppuccin",
   lazy = false,
   priority = 1000,
   opts = {},

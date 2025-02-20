@@ -58,7 +58,7 @@ local function config()
 end
 
 return {
-  "lewis6991/gitsigns.nvim", tag = "v0.9.0",
+  "lewis6991/gitsigns.nvim",
   config = config
 }
 

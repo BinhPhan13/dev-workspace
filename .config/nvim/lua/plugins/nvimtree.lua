@@ -43,7 +43,7 @@ local function config()
 end
 
 return {
-  "nvim-tree/nvim-tree.lua", tag = "v1.5.0",
+  "nvim-tree/nvim-tree.lua",
   config = config
 }
 

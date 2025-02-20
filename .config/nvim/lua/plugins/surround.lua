@@ -31,7 +31,7 @@ local function config()
 end
 
 return {
-  "kylechui/nvim-surround", tag = "v2.3.0",
+  "kylechui/nvim-surround",
   event = "VeryLazy",
   config = config
 }

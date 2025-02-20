@@ -5,7 +5,7 @@ local function config()
 end
 
 return {
-  "mbbill/undotree", tag = "rel_6.1",
+  "mbbill/undotree",
   config = config
 }
 
