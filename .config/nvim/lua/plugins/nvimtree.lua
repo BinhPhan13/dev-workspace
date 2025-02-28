@@ -37,7 +37,8 @@ local function config()
     actions = {
       change_dir = { global = true },
       open_file = { quit_on_open = true },
-    }
+    },
+    git = { enable = false },
   })
   vim.keymap.set("n", "<leader>e", vim.cmd.NvimTreeToggle)
 end
