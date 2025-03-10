@@ -4,8 +4,8 @@ vim.g.mapleader = " "
 vim.keymap.set("n", "<Esc>", ":<BS>")
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<leader><Tab>", "<C-6>")
-vim.keymap.set("n", "<M-k>", "{")
-vim.keymap.set("n", "<M-j>", "}")
+vim.keymap.set({"n", "v"}, "<M-k>", "{zz")
+vim.keymap.set({"n", "v"}, "<M-j>", "}zz")
 
 -- chdir
 vim.keymap.set("n", "<leader>c", ":cd")
@@ -54,14 +54,26 @@ vim.keymap.set("n", "<leader>to", function()
 end)
 vim.keymap.set("n", "<leader>tx", function() pcall(vim.cmd.tabc) end)
 
-vim.keymap.set("n", "<M-h>", function() pcall(vim.cmd, "tabp") end)
-vim.keymap.set("n", "<M-l>", function() pcall(vim.cmd, "tabn") end)
-vim.keymap.set("n", "<C-M-h>", function() pcall(vim.cmd, "-tabm") end)
-vim.keymap.set("n", "<C-M-l>", function() pcall(vim.cmd, "+tabm") end)
-
 -- buffer
 vim.keymap.set("n", "<leader>bd", function() vim.cmd("bw") end)
 vim.keymap.set("n", "<leader>bD", function() vim.cmd("%bw") end)
+vim.keymap.set("n", "<M-l>", function()
+  local count = vim.v.count1
+  return vim.cmd("bn" .. count)
+end)
+vim.keymap.set("n", "<M-h>", function()
+  local count = vim.v.count1
+  return vim.cmd("bN" .. count)
+end)
+
+vim.keymap.set("n", "<C-M-j>", function()
+  local count = vim.v.count1
+  return pcall(vim.cmd, "m+" .. count)
+end)
+vim.keymap.set("n", "<C-M-k>", function()
+  local count = vim.v.count1
+  return pcall(vim.cmd, "m-" .. count+1)
+end)
 
 -- text objects
 vim.keymap.set({"x", "o"}, "ic", "iB")

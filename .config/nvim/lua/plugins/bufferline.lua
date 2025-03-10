@@ -1,11 +1,11 @@
 local function config()
   local options = {
-    mode = "tabs",
+    mode = "buffer",
     numbers = "ordinal",
 
     tab_size = 17,
     max_name_length = 17,
-    show_tab_indicators = false,
+    show_tab_indicators = true,
 
     show_buffer_close_icons = false,
     show_duplicate_prefix = true,
