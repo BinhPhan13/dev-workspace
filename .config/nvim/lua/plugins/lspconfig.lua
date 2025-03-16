@@ -23,6 +23,11 @@ local function config()
     end,
   })
 
+  vim.keymap.set("n", "<leader>lr", vim.cmd.LspRestart)
+  vim.keymap.set("n", "<leader>li", vim.cmd.LspInfo)
+  vim.keymap.set("n", "<leader>ld", ":LspStop")
+  vim.keymap.set("n", "<leader>ls", ":LspStart")
+
 
   local lsp = require("lspconfig")
   -- Add cmp_nvim_lsp capabilities
