@@ -12,7 +12,7 @@ local function config()
         },
         python = {
           command = { "python" },
-          -- format = ic.bracketed_paste_python,
+          format = ic.bracketed_paste_python,
           block_deviders = { "# %%", "#%%" },
         }
       },
@@ -40,7 +40,7 @@ local function config()
       clear = "<leader>rc",
     },
     highlight = { italic = true },
-    ignore_blank_lines = true,
+    ignore_blank_lines = false,
   }
 end
 
