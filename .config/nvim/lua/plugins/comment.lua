@@ -6,12 +6,12 @@ local function config()
 
     toggler = {
       line = "gcc",
-      -- block = "gbc",
+      block = "gbc",
     },
 
     opleader = {
       line = "gc",
-      -- block = "gb",
+      block = "gb",
     },
 
     extra = {
