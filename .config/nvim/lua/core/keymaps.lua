@@ -37,6 +37,30 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzz")
 vim.keymap.set("n", "N", "Nzz")
 
+-- move
+vim.keymap.set("n", "<C-M-j>", function()
+  return pcall(vim.cmd, "m+" .. vim.v.count1)
+end)
+vim.keymap.set("n", "<C-M-k>", function()
+  return pcall(vim.cmd, "m-" .. vim.v.count1 + 1)
+end)
+
+-- text objects
+vim.keymap.set({"x", "o"}, "ic", "iB")
+vim.keymap.set({"x", "o"}, "ac", "aB")
+vim.keymap.set({"x", "o"}, "ir", "i[")
+vim.keymap.set({"x", "o"}, "ar", "a[")
+vim.keymap.set({"x", "o"}, "il", "i<")
+vim.keymap.set({"x", "o"}, "al", "a<")
+
+vim.keymap.set({"x", "o"}, "ij", "i\"")
+vim.keymap.set({"x", "o"}, "aj", "a\"")
+vim.keymap.set({"x", "o"}, "ik", "i\'")
+vim.keymap.set({"x", "o"}, "ak", "a\'")
+vim.keymap.set({"x", "o"}, "iz", "i`")
+vim.keymap.set({"x", "o"}, "az", "a`")
+
+
 -- window
 vim.keymap.set("n", "<leader>wv", "<C-w>v")
 vim.keymap.set("n", "<leader>wh", "<C-w>s")
@@ -55,38 +79,22 @@ end)
 vim.keymap.set("n", "<leader>tx", function() pcall(vim.cmd.tabc) end)
 
 -- buffer
-vim.keymap.set("n", "<leader>bd", function() vim.cmd("bw") end)
-vim.keymap.set("n", "<leader>bD", function() vim.cmd("%bw") end)
-vim.keymap.set("n", "<M-l>", function()
-  local count = vim.v.count1
-  return vim.cmd("bn" .. count)
-end)
-vim.keymap.set("n", "<M-h>", function()
-  local count = vim.v.count1
-  return vim.cmd("bN" .. count)
-end)
+vim.keymap.set("n", "<leader>bd", vim.cmd.bw)
+vim.keymap.set("n", "<M-l>", vim.cmd.bn)
+vim.keymap.set("n", "<M-h>", vim.cmd.bN)
+vim.keymap.set("n", "<M-b>", function()
+  local buffers = vim.api.nvim_list_bufs()
+  local listed_buffers = {}
 
-vim.keymap.set("n", "<C-M-j>", function()
-  local count = vim.v.count1
-  return pcall(vim.cmd, "m+" .. count)
-end)
-vim.keymap.set("n", "<C-M-k>", function()
-  local count = vim.v.count1
-  return pcall(vim.cmd, "m-" .. count+1)
-end)
+  for _, bufnr in ipairs(buffers) do
+    if vim.bo[bufnr].buflisted then
+      table.insert(listed_buffers, bufnr)
+    end
+  end
 
--- text objects
-vim.keymap.set({"x", "o"}, "ic", "iB")
-vim.keymap.set({"x", "o"}, "ac", "aB")
-vim.keymap.set({"x", "o"}, "ir", "i[")
-vim.keymap.set({"x", "o"}, "ar", "a[")
-vim.keymap.set({"x", "o"}, "il", "i<")
-vim.keymap.set({"x", "o"}, "al", "a<")
-
-vim.keymap.set({"x", "o"}, "ij", "i\"")
-vim.keymap.set({"x", "o"}, "aj", "a\"")
-vim.keymap.set({"x", "o"}, "ik", "i\'")
-vim.keymap.set({"x", "o"}, "ak", "a\'")
-vim.keymap.set({"x", "o"}, "iz", "i`")
-vim.keymap.set({"x", "o"}, "az", "a`")
+  local k = vim.v.count1
+  if k <= #listed_buffers then 
+    return vim.cmd("b" .. listed_buffers[k])
+  end
+end)
 
