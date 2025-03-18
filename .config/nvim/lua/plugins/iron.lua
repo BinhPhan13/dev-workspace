@@ -18,8 +18,8 @@ local function config()
       },
       repl_filetype = function(bufnr, ft) return ft end,
       repl_open_cmd = {
-        iv.right("%50"),
-        iv.bottom("%30"),
+        iv.split.vertical.rightbelow("%50"),
+        iv.split.rightbelow("%30"),
       }
     },
 
