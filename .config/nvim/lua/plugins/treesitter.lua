@@ -12,6 +12,7 @@ local function config()
 
       "python",
       "sql",
+      "go",
     },
     sync_install = false,
     auto_install = false,

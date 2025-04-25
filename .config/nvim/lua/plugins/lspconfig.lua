@@ -2,14 +2,13 @@ local function config()
   vim.api.nvim_create_autocmd("LspAttach", {
     desc = "LSP actions",
     callback = function(event)
-      local opts = { buffer = event.buf }
-
       vim.diagnostic.config({
         virtual_text = true,
         underline = true,
         signs = false,
       })
 
+      local opts = { buffer = event.buf }
       vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
       vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, opts)
@@ -70,6 +69,19 @@ local function config()
   }
   local opts = { init_options = { settings = opts } }
   setup_lsp("ruff", opts)
+
+  -- gopls
+  local opts = {
+    gopls = {
+      analyses = {
+        unusedparams = true,
+      },
+      staticcheck = true,
+      gofumpt = true,
+    },
+  }
+  local opts = { settings = opts }
+  setup_lsp("gopls", opts)
 
 end
 
