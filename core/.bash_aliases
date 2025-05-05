@@ -15,6 +15,7 @@ alias .5='cd ../../../../..'
 
 # misc
 alias tat='tmux attach'
+alias tcr='tmux new-session -c'
 alias tpi='watch -n1 ping -c1 github.com'
 alias dk='docker'
 alias dc='docker compose'
