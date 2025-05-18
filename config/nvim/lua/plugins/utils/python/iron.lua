@@ -13,7 +13,7 @@ local function config()
         python = {
           command = { "python" },
           format = ic.bracketed_paste_python,
-          block_deviders = { "# %%", "#%%" },
+          block_dividers = { "# %%", "#%%" },
         }
       },
       repl_filetype = function(bufnr, ft) return ft end,

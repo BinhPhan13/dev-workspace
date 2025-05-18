@@ -7,8 +7,7 @@ local function config()
   "fdsajkl;ghtrewquiopvcxznm,./" ..
   "FDSAJKL:GHTREWQUIOPVCXZNM<>?"
 
-  vim.keymap.set({"n", "x", "o"}, "<leader>j", "<Plug>(leap-anywhere)")
-
+  vim.keymap.set({"n", "x", "o"}, "r", "<Plug>(leap-anywhere)")
 end
 
 return {

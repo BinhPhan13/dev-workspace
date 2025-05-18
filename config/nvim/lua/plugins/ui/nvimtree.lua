@@ -39,6 +39,11 @@ local function config()
       open_file = { quit_on_open = true },
     },
     git = { enable = false },
+    renderer = { icons = { show = {
+      file = false,
+      folder = false,
+      folder_arrow = false,
+    }}}
   })
   vim.keymap.set("n", "<leader>e", vim.cmd.NvimTreeToggle)
 end

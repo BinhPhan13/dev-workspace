@@ -4,7 +4,7 @@ local sections = {
   lualine_c = { "%{fnamemodify(expand('%'), ':~:.')} %m%r" },
 
   lualine_x = { "filetype" },
-  lualine_y = { "branch" },
+  lualine_y = { "progress" },
   lualine_z = { "location" },
 }
 
