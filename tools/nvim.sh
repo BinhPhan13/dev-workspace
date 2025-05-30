@@ -1,6 +1,7 @@
 #!/bin/bash
 install_dir='nvim-linux-x86_64'
 if ! [ -d $HOME/.local/$install_dir ]; then
+  # try neovim/neovim-releases for libc < 2.32
   url="https://github.com/neovim/neovim/releases/download/
       v0.11.1/$install_dir.tar.gz"
   curl -L ${url//[[:space:]]/} -o hic || exit 1
