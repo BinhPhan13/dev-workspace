@@ -1,0 +1,294 @@
+local function mini_icons()
+  require("mini.icons").setup({ style = 'glyph' })
+  MiniIcons.mock_nvim_web_devicons()
+end
+
+local function mini_files()
+  -- toggle explorer
+  vim.keymap.set('n', '<leader>e', function()
+    if not MiniFiles.close() then MiniFiles.open() end
+  end)
+  -- customize bookmark
+  vim.api.nvim_create_autocmd('User', {
+    pattern = 'MiniFilesExplorerOpen',
+    callback = function()
+      MiniFiles.set_bookmark('c', vim.fn.stdpath('config'))
+      MiniFiles.set_bookmark('w', vim.fn.getcwd)
+      MiniFiles.set_bookmark('h', '~')
+    end,
+  })
+  -- toggle dot files
+  local showdot = true
+  local _fshow = function(fs_entry) return true end
+  local _fhide = function(fs_entry)
+    return not vim.startswith(fs_entry.name, '.')
+  end
+  local toggle_dot = function()
+    showdot = not showdot
+    local filter = showdot and _fshow or _fhide
+    MiniFiles.refresh({ content = { filter = filter } })
+  end
+  -- set focused directory as cwd
+  local set_cwd = function()
+    local path = (MiniFiles.get_fs_entry() or {}).path
+    if path ~= nil then vim.fn.chdir(vim.fs.dirname(path)) end
+  end
+  -- yank in register full path of entry under cursor
+  local yank_path = function()
+    local path = (MiniFiles.get_fs_entry() or {}).path
+    if path ~= nil then vim.fn.setreg(vim.v.register, path) end
+  end
+
+  vim.api.nvim_create_autocmd('User', {
+    pattern = 'MiniFilesBufferCreate',
+    callback = function(args)
+      local b = args.data.buf_id
+      vim.keymap.set('n', 'g.', toggle_dot, { buffer = b })
+      vim.keymap.set('n', 'gw', set_cwd,    { buffer = b })
+      vim.keymap.set('n', 'gy', yank_path,  { buffer = b })
+    end,
+  })
+
+  require("mini.files").setup({
+    mappings = {
+      go_in = '',
+      go_out = '',
+    },
+    options = {
+      permanent_delete = true,
+      use_as_default_explorer = true,
+    },
+    windows = {
+      max_number = math.huge,
+      preview = true,
+      width_focus = 25,
+      width_nofocus = 25,
+      width_preview = 50,
+    },
+  })
+end
+
+local function mini_tabline()
+  require("mini.tabline").setup({
+    -- format = function(buf_id, label)
+    --   local suffix = vim.bo[buf_id].modified and '+' or ''
+    --   return MiniTabline.default_format(buf_id, label) .. suffix
+    -- end,
+    tabpage_section = 'right',
+  })
+end
+
+local function mini_statusline()
+  vim.opt.showmode = false
+  local mini = require("mini.statusline")
+  local function active()
+    local mode, mode_hl = mini.section_mode({ trunc_width = 75 })
+    local filename = "%{fnamemodify(expand('%'), ':~:.')} %m%r"
+
+    local filetype = "%{&filetype}"
+    local percent = "%2p%%"
+    local location = "%3l:%-2c"
+
+    return mini.combine_groups({
+      { hl = mode_hl, strings = { mode } },
+      "%<", -- Mark general truncate point
+      { hl = "MiniStatuslineFilename", strings = { filename } },
+      "%=", -- End left alignment
+      { hl = "MiniStatuslineFilename", strings = { filetype } },
+      { hl = "MiniStatuslineFileinfo", strings = { percent } },
+      { hl = mode_hl, strings = { location } },
+    })
+  end
+  mini.setup({ content = { active = active } })
+end
+
+local function mini_pick()
+  local win_config = function()
+    local height = math.floor(0.75 * vim.o.lines)
+    local width = math.floor(0.5 * vim.o.columns)
+    return {
+      anchor = 'NW', height = height, width = width,
+      row = math.floor(0.3 * (vim.o.lines - height)),
+      col = math.floor(0.5 * (vim.o.columns - width)),
+    }
+  end
+  require("mini.pick").setup({
+    window = { config = win_config },
+    mappings = {
+      move_down  = '<C-j>',
+      move_up    = '<C-k>',
+      move_start = '<C-g>',
+
+      toggle_info    = '<C-i>',
+      toggle_preview = '<C-p>',
+      stop = '<Esc>',
+
+      choose            = '<CR>',
+      choose_in_split   = '<C-s>',
+      choose_in_vsplit  = '<C-v>',
+      choose_in_tabpage = '<C-t>',
+      choose_marked     = '',
+
+      scroll_up    = '<C-u>',
+      scroll_down  = '<C-d>',
+      scroll_left  = '<C-h>',
+      scroll_right = '<C-l>',
+
+      refine        = '<C-n>',
+      refine_marked = '<M-n>',
+
+      delete_char       = '<BS>',
+      delete_char_right = '<Del>',
+      delete_word       = '<C-w>',
+      delete_left       = '<C-0>',
+
+      paste    = '<C-r>',
+      mark     = '<C-v>',
+      mark_all = '<C-a>',
+    },
+  })
+  vim.keymap.set("n", "<leader>ff", MiniPick.builtin.files)
+  vim.keymap.set("n", "<leader>fb", MiniPick.builtin.buffers)
+  vim.keymap.set("n", "<leader>fg", MiniPick.builtin.grep)
+  vim.keymap.set("n", "<leader>fl", MiniPick.builtin.grep_live)
+  vim.keymap.set("n", "<leader>fh", function()
+    MiniPick.builtin.help({default_split = 'vertical'})
+  end)
+  vim.keymap.set("n", "<leader>fc", function()
+    local cmd_str = vim.fn.input("Command: ")
+    local cmd = {}
+    for part in string.gmatch(cmd_str, '%S+') do table.insert(cmd, part) end
+    if next(cmd) then MiniPick.builtin.cli({ command = cmd }) end
+  end)
+end
+
+local function mini_ai()
+  local mini = require("mini.ai")
+  local custom_textobjects = {
+    -- whole file
+    g = function()
+      local from = { line = 1, col = 1 }
+      local to = {
+        line = vim.fn.line('$'),
+        col = math.max(vim.fn.getline('$'):len(), 1)
+      }
+      return { from = from, to = to }
+    end,
+    -- brackets
+    r = {{'%b()', '%b{}', '%b[]', '%b<>'}, '^.().*().$'},
+    R = {{'%b()', '%b{}', '%b[]', '%b<>'}, '^.%s*().-()%s*.$'},
+    b = { '%b()', '^.().*().$' },
+    B = { '%b()', '^.%s*().-()%s*.$'},
+    c = { '%b{}', '^.().*().$' },
+    C = { '%b{}', '^.%s*().-()%s*.$'},
+    u = { '%b[]', '^.().*().$' },
+    U = { '%b[]', '^.%s*().-()%s*.$'},
+    y = { '%b<>', '^.().*().$' },
+    Y = { '%b<>', '^.%s*().-()%s*.$'},
+    -- quotes
+    q = {{"'.-'", '".-"', '`.-`'}, '^.().*().$'},
+    k = { "'.-'", '^.().*().$' },
+    j = { '".-"', '^.().*().$' },
+    z = { '`.-`', '^.().*().$' },
+  }
+  mini.setup({
+    custom_textobjects = custom_textobjects,
+    search_method = 'cover_or_next',
+    n_lines = 50,
+    silent = false,
+  })
+end
+
+local function mini_surround()
+  vim.keymap.set({"n", "x"}, "s", "<nop>")
+  local mini = require("mini.surround")
+  local custom_surroundings = {
+    -- brackets
+    r = {
+      input = { {'%b()', '%b{}', '%b[]', '%b<>'}, '^.().*().$' },
+      output = { left = '(', right = ')' }
+    },
+    R = {
+      input = { {'%b()', '%b{}', '%b[]', '%b<>'}, '^.%s*().-()%s*.$'},
+      output = { left = '(', right = ')' }
+    },
+    b = {
+      input = { '%b()', '^.().*().$' },
+      output = { left = '(', right = ')' }
+    },
+    B = {
+      input = { '%b()', '^.%s*().-()%s*.$'},
+      output = { left = '(', right = ')' }
+    },
+    c = {
+      input = { '%b{}', '^.().*().$' },
+      output = { left = '{', right = '}' }
+    },
+    C = {
+      input = { '%b{}', '^.%s*().-()%s*.$'},
+      output = { left = '{', right = '}' }
+    },
+    u = {
+      input = { '%b[]', '^.().*().$' },
+      output = { left = '[', right = ']' }
+    },
+    U = {
+      input = { '%b[]', '^.%s*().-()%s*.$'},
+      output = { left = '[', right = ']' }
+    },
+    y = {
+      input = { '%b<>', '^.().*().$' },
+      output = { left = '<', right = '>' }
+    },
+    Y = {
+      input = { '%b<>', '^.%s*().-()%s*.$'},
+      output = { left = '<', right = '>' }
+    },
+    -- quotes
+    q = {
+      input = { {"'.-'", '".-"', '`.-`'}, '^.().*().$' },
+      output = { left = '"', right = '"' }
+    },
+    k = {
+      input = { "'.-'", '^.().*().$' },
+      output = { left = "'", right = "'" }
+    },
+    j = {
+      input = { '".-"', '^.().*().$' },
+      output = { left = '"', right = '"' }
+    },
+    z = {
+      input = { '`.-`', '^.().*().$' },
+      output = { left = '`', right = '`' }
+    },
+  }
+  mini.setup({
+    custom_surroundings = custom_surroundings,
+    search_method = 'cover',
+    n_lines = 50,
+    silent = true,
+    highlight_duration = 1000,
+    respect_selection_type = true,
+    mappings = { add = 'sj' },
+  })
+end
+
+local function mini_completion()
+    require("mini.completion").setup({
+    })
+end
+
+return {
+  "echasnovski/mini.nvim",
+  config = function()
+    mini_icons()
+    mini_files()
+    mini_tabline()
+    mini_statusline()
+    mini_pick()
+
+    mini_ai()
+    mini_surround()
+  end,
+}
+
