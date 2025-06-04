@@ -8,17 +8,10 @@ return {
     require("catppuccin").setup({
       transparent_background = true,
       dim_inactive = { enable = false },
-      no_italic = true,
       -- no_bold = true,
+      no_italic = true,
       no_underline = true,
-      default_integrations = false,
-      integrations = {
-        treesitter = true,
-        mini = {
-          enabled = true,
-          indentscope_color = "",
-        },
-      }
+      default_integrations = true,
     })
     vim.cmd.colorscheme("catppuccin-mocha")
   end,
