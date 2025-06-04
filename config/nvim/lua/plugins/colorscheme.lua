@@ -12,6 +12,7 @@ return {
       no_italic = true,
       no_underline = true,
       default_integrations = true,
+      integrations = { leap = true },
     })
     vim.cmd.colorscheme("catppuccin-mocha")
   end,
