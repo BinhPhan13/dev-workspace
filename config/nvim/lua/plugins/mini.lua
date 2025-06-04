@@ -292,6 +292,7 @@ end
 
 local function mini_diff()
   require('mini.diff').setup({
+    mappings = { apply = '', reset = 'gh' },
     view = {
       style = 'sign',
       signs = {
