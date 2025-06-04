@@ -1,6 +1,7 @@
 local function mini_icons()
   require("mini.icons").setup({ style = 'glyph' })
   MiniIcons.mock_nvim_web_devicons()
+  MiniIcons.tweak_lsp_kind()
 end
 
 local function mini_files()
@@ -271,6 +272,24 @@ local function mini_surround()
   })
 end
 
+local function mini_completion()
+  require("mini.completion").setup({
+    lsp_completion = { source_func = 'omnifunc' },
+    window = {
+      info = { height = 30, width = 70 },
+      signature = { height = 30, width = 70 },
+    },
+    fallback_action = '<C-n>',
+    mappings = {
+      force_twostep = '<M-n>',
+      force_fallback = '<M-S-n>',
+      scroll_up = '<M-u>',
+      scroll_down = '<M-d>',
+    }
+  })
+  vim.lsp.config('*', {capabilities = MiniCompletion.get_lsp_capabilities()})
+end
+
 local function mini_diff()
   require('mini.diff').setup({
     view = {
@@ -304,6 +323,7 @@ return {
     mini_ai()
     mini_surround()
     mini_diff()
+    mini_completion()
 
     mini_bufremove()
   end,
