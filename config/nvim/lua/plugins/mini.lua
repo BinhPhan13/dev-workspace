@@ -150,8 +150,8 @@ local function mini_pick()
   })
   vim.keymap.set("n", "<leader>ff", MiniPick.builtin.files)
   vim.keymap.set("n", "<leader>fb", MiniPick.builtin.buffers)
-  vim.keymap.set("n", "<leader>fg", MiniPick.builtin.grep)
-  vim.keymap.set("n", "<leader>fl", MiniPick.builtin.grep_live)
+  vim.keymap.set("n", "<leader>fgp", MiniPick.builtin.grep)
+  vim.keymap.set("n", "<leader>fgl", MiniPick.builtin.grep_live)
   vim.keymap.set("n", "<leader>fh", function()
     MiniPick.builtin.help({default_split = 'vertical'})
   end)
@@ -165,15 +165,6 @@ end
 
 local function mini_ai()
   local custom_textobjects = {
-    -- whole file
-    g = function()
-      local from = { line = 1, col = 1 }
-      local to = {
-        line = vim.fn.line('$'),
-        col = math.max(vim.fn.getline('$'):len(), 1)
-      }
-      return { from = from, to = to }
-    end,
     -- brackets
     r = {{'%b()', '%b{}', '%b[]', '%b<>'}, '^.().*().$'},
     R = {{'%b()', '%b{}', '%b[]', '%b<>'}, '^.%s*().-()%s*.$'},
@@ -272,6 +263,31 @@ local function mini_surround()
   })
 end
 
+local function mini_extra()
+  require("mini.extra").setup()
+  -- extra mini.ai
+  local custom_textobjects = {
+    G = MiniExtra.gen_ai_spec.buffer(),
+    L = MiniExtra.gen_ai_spec.line(),
+    N = MiniExtra.gen_ai_spec.number(),
+    D = MiniExtra.gen_ai_spec.diagnostic(),
+    i = MiniExtra.gen_ai_spec.indent(),
+  }
+  for k, v in pairs(custom_textobjects) do
+    MiniAi.config.custom_textobjects[k] = v
+  end
+  -- extra mini.pick
+  vim.keymap.set("n", "<leader>fd", MiniExtra.pickers.diagnostic)
+  vim.keymap.set("n", "<leader>fm", MiniExtra.pickers.marks)
+  vim.keymap.set("n", "<leader>fe", MiniExtra.pickers.explorer)
+  vim.keymap.set("n", "<leader>fgh", MiniExtra.pickers.git_hunks)
+  vim.keymap.set("n", "<leader>fo", MiniExtra.pickers.oldfiles)
+  vim.keymap.set("n", "<leader>fr", function()
+    MiniExtra.pickers.lsp({ scope = "references" })
+  end)
+  vim.keymap.set("n", "<leader>fk", MiniExtra.pickers.keymaps)
+end
+
 local function mini_completion()
   require("mini.completion").setup({
     lsp_completion = { source_func = 'omnifunc' },
@@ -319,10 +335,12 @@ return {
     mini_files()
     mini_tabline()
     mini_statusline()
-    mini_pick()
 
+    mini_pick()
     mini_ai()
     mini_surround()
+    mini_extra()
+
     mini_diff()
     mini_completion()
 
