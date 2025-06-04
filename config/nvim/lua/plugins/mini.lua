@@ -303,6 +303,7 @@ local function mini_completion()
       scroll_down = '<M-d>',
     }
   })
+  vim.opt.completeopt:append('fuzzy')
   vim.lsp.config('*', {capabilities = MiniCompletion.get_lsp_capabilities()})
 end
 
