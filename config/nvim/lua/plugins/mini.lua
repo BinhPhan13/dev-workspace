@@ -163,7 +163,6 @@ local function mini_pick()
 end
 
 local function mini_ai()
-  local mini = require("mini.ai")
   local custom_textobjects = {
     -- whole file
     g = function()
@@ -191,9 +190,9 @@ local function mini_ai()
     j = { '".-"', '^.().*().$' },
     z = { '`.-`', '^.().*().$' },
   }
-  mini.setup({
+  require("mini.ai").setup({
     custom_textobjects = custom_textobjects,
-    search_method = 'cover_or_next',
+    search_method = 'cover',
     n_lines = 50,
     silent = false,
   })
@@ -201,7 +200,6 @@ end
 
 local function mini_surround()
   vim.keymap.set({"n", "x"}, "s", "<nop>")
-  local mini = require("mini.surround")
   local custom_surroundings = {
     -- brackets
     r = {
@@ -262,7 +260,7 @@ local function mini_surround()
       output = { left = '`', right = '`' }
     },
   }
-  mini.setup({
+  require("mini.surround").setup({
     custom_surroundings = custom_surroundings,
     search_method = 'cover',
     n_lines = 50,
@@ -273,9 +271,25 @@ local function mini_surround()
   })
 end
 
-local function mini_completion()
-    require("mini.completion").setup({
-    })
+local function mini_diff()
+  require('mini.diff').setup({
+    view = {
+      style = 'sign',
+      signs = {
+        add    = "║",
+        change = "║",
+        delete = "║",
+      }
+    },
+  })
+  vim.keymap.set('n', '<leader>hv', MiniDiff.toggle_overlay)
+  vim.keymap.set('n', '<leader>hV', MiniDiff.toggle)
+end
+
+local function mini_bufremove()
+  require("mini.bufremove").setup({})
+  vim.keymap.set("n", "<leader>bd", MiniBufremove.wipeout)
+  vim.keymap.set("n", "<leader>bD", function() vim.cmd("%bw") end)
 end
 
 return {
@@ -289,6 +303,9 @@ return {
 
     mini_ai()
     mini_surround()
+    mini_diff()
+
+    mini_bufremove()
   end,
 }
 

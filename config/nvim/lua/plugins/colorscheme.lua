@@ -11,7 +11,7 @@ return {
       no_italic = true,
       -- no_bold = true,
       no_underline = true,
-      default_integrations = true,
+      default_integrations = false,
       integrations = {
         treesitter = true,
         mini = {

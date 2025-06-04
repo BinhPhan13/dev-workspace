@@ -44,8 +44,6 @@ vim.keymap.set({"n", "x"}, "<M-j>", "}")
 -- buffer
 vim.keymap.set("n", "<M-l>", vim.cmd.bn)
 vim.keymap.set("n", "<M-h>", vim.cmd.bN)
-vim.keymap.set("n", "<leader>bd", vim.cmd.bw)
-vim.keymap.set("n", "<leader>bD", function() vim.cmd("%bw") end)
 
 -- tab
 vim.keymap.set("n", "<leader>to", function()
