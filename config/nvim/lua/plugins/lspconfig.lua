@@ -17,6 +17,8 @@ return {
     vim.keymap.set("n", "<leader>ld", ":LspStop")
     vim.keymap.set("n", "<leader>ls", ":LspStart")
 
+    vim.keymap.set("n", "grd", vim.lsp.buf.definition)
+
     vim.lsp.enable({
       'basedpyright',
       'ruff',
