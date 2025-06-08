@@ -5,11 +5,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
-vim.api.nvim_create_autocmd("BufWrite", {
-  desc = "Trim trailspace when saved",
-  callback = function() vim.cmd("silent! %s/\\s\\+$//g") end
-})
-
 vim.api.nvim_create_autocmd("BufWinEnter", {
   desc = "Make help buffers listed",
   pattern = "*.txt",

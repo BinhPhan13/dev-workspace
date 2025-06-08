@@ -326,7 +326,7 @@ end
 local function mini_bufremove()
   require("mini.bufremove").setup({})
   vim.keymap.set("n", "<leader>bd", MiniBufremove.wipeout)
-  vim.keymap.set("n", "<leader>bD", function() vim.cmd("%bw") end)
+  vim.keymap.set("n", "<leader>bD", vim.cmd.bd)
 end
 
 return {

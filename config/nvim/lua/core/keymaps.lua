@@ -1,17 +1,22 @@
 vim.g.mapleader = " "
 
 -- misc
-vim.keymap.set("n", "<Esc>", ":<BS>")
-vim.keymap.set("n", "Q", "<nop>")
+vim.keymap.set({"n", "x"}, "Q", "<nop>")
+vim.keymap.set({"i", "c"}, "<C-l>", "<Del>")
 vim.keymap.set("n", "<leader><Tab>", "<C-6>")
 vim.keymap.set("n", "<leader>w", "<C-w>")
 vim.keymap.set("n", "<C-n>", "-")
--- vim.keymap.set({"i", "c"}, "<C-l>", "<Del>")
+
+-- clear command line
+vim.keymap.set("n", "<Esc>", ":<BS>")
+
+-- remove trailspace
+vim.keymap.set("n", "Q", function() vim.cmd("silent! %s/\\s\\+$//g") end)
 
 -- visual just pasted text
 vim.keymap.set("n", "<C-p>", "mzgpkV'zj")
 
--- replace globally word under cursor
+-- substitute globally word under cursor
 vim.keymap.set("n", "S", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/g<Left><Left>")
 
 -- chdir
