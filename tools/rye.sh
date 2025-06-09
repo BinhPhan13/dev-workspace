@@ -2,10 +2,14 @@
 version=${1:-0.44.0}
 pyversion=${2:-3.11.9}
 
-if ! command -v rye; then
+if ! [ -d $HOME/.rye ]; then
   curl -sSf "https://rye.astral.sh/get" |
   RYE_VERSION="$version" RYE_INSTALL_OPTION='--yes' \
   RYE_TOOLCHAIN_VERSION="cpython@$pyversion" bash || exit 1
+fi
+
+if ! command -v rye; then
+  printf '# RYE\n. $HOME/.rye/env\n' >> $HOME/.bashrc
   . $HOME/.rye/env
 fi
 
