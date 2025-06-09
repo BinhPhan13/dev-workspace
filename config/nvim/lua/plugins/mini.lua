@@ -323,6 +323,33 @@ local function mini_diff()
   vim.keymap.set('n', '<leader>hV', MiniDiff.toggle)
 end
 
+local function mini_pairs()
+  local mappings = {
+      ['('] = { action = 'open', pair = '()', neigh_pattern = '[^\\].' },
+      ['['] = { action = 'open', pair = '[]', neigh_pattern = '[^\\].' },
+      ['{'] = { action = 'open', pair = '{}', neigh_pattern = '[^\\].' },
+      ['<'] = { action = 'open', pair = '<>', neigh_pattern = '\r.' },
+
+      [')'] = { action = 'close', pair = '()', neigh_pattern = '[^\\].' },
+      [']'] = { action = 'close', pair = '[]', neigh_pattern = '[^\\].' },
+      ['}'] = { action = 'close', pair = '{}', neigh_pattern = '[^\\].' },
+      ['>'] = { action = 'close', pair = '<>', neigh_pattern = '\r.' },
+
+      ['"'] = { action = 'closeopen', pair = '""', neigh_pattern = '[^\\].', register = { cr = true } },
+      ["'"] = { action = 'closeopen', pair = "''", neigh_pattern = '[^\\].', register = { cr = true } },
+      ['`'] = { action = 'closeopen', pair = '``', neigh_pattern = '[^\\].', register = { cr = true } },
+
+  }
+  require("mini.pairs").setup({ mappings = mappings })
+
+  local map_bs = function(lhs, rhs)
+    vim.keymap.set('i', lhs, rhs, { expr = true, replace_keycodes = false })
+  end
+  map_bs('<C-h>', 'v:lua.MiniPairs.bs()')
+  map_bs('<C-w>', 'v:lua.MiniPairs.bs("\23")')
+  map_bs('<C-u>', 'v:lua.MiniPairs.bs("\21")')
+end
+
 local function mini_bufremove()
   require("mini.bufremove").setup({})
   vim.keymap.set("n", "<leader>bd", MiniBufremove.wipeout)
@@ -344,6 +371,7 @@ return {
 
     mini_diff()
     mini_completion()
+    mini_pairs()
 
     mini_bufremove()
   end,
