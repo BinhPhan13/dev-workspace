@@ -12,10 +12,10 @@ return {
     vim.diagnostic.goto_next({ float = false }) end)
     vim.keymap.set("n", "g/", vim.diagnostic.open_float)
 
-    vim.keymap.set("n", "<leader>lr", vim.cmd.LspRestart)
     vim.keymap.set("n", "<leader>li", vim.cmd.LspInfo)
-    vim.keymap.set("n", "<leader>ld", ":LspStop")
-    vim.keymap.set("n", "<leader>ls", ":LspStart")
+    vim.keymap.set("n", "<leader>lr", ":LspRestart ")
+    vim.keymap.set("n", "<leader>ld", ":LspStop ")
+    vim.keymap.set("n", "<leader>ls", ":LspStart ")
 
     vim.keymap.set("n", "grd", vim.lsp.buf.definition)
 
