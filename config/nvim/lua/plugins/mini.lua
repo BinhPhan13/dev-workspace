@@ -371,7 +371,7 @@ return {
 
     mini_diff()
     mini_completion()
-    mini_pairs()
+    -- mini_pairs()
 
     mini_bufremove()
   end,
