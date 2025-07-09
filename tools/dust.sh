@@ -9,6 +9,6 @@ url=$(echo $url | tr -d '[[:space:]]')
 curl -fL $url -o hic || exit 1
 
 tar xf hic && rm hic
-install $dir/dust -D $HOME/.local/bin
+install $dir/dust -Dt $HOME/.local/bin
 rm -r $dir
 
