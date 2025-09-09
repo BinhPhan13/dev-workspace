@@ -1,0 +1,25 @@
+#!/bin/sh
+set -eu
+. "./functions.sh"
+
+platform=$(detect_platform)
+case "$platform" in
+  linux-amd64) platform="linux-x86_64";;
+  *) echo "unsupported platform: $platform"; exit 1;;
+esac
+
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -version);;
+    -language);;
+  esac
+done
+version='142.0.1'
+language='en-US'
+
+url="https://download-installer.cdn.mozilla.net/pub/firefox/releases/"\
+"$version/$platform/$language/firefox-$version.tar.xz"
+
+download "$url"
+
