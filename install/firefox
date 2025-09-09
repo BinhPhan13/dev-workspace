@@ -1,0 +1,52 @@
+#!/bin/sh
+set -e
+
+self="$(realpath $(dirname $0))"
+. "$self/../shell/.functions"
+
+platform="$(detect_platform)"
+case "$platform" in
+  linux-amd64) platform="linux-x86_64";;
+  *) die "unsupported platform: $platform";;
+esac
+
+show_help() {
+  echo "Usage: firefox [options]"
+  echo ""
+  echo "Options:"
+  echo "  -version   Firefox version to install (default 142.0.1)"
+  echo "  -lang      Language to install (default en-US)"
+  echo "  --help     Show this help message"
+}
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -version) version="$(get_option $@)"; shift 2;;
+    -lang) language="$(get_option $@)"; shift 2;;
+    --help) show_help; exit 0;;
+    -*) die help "Unknown option '$1'";;
+    *) die help "No arguments allowed";;
+  esac
+done
+
+version="${version:-"142.0.1"}"
+language="${language:-"en-US"}"
+echo "Install Firefox $version in $language"
+
+url="https://download-installer.cdn.mozilla.net/pub/firefox/releases/"\
+"$version/$platform/$language/firefox-$version.tar.xz"
+
+dest="$HOME/opt"
+mkdir -p $dest
+[ -d "$dest/firefox" ] && die "$dest/firefox exists, skip download"
+
+cd "$HOME/opt"
+"$self/download" -axel "$url" "$outfile"
+outfile="${url##*/}"
+echo $outfile
+# [ -f $outfile ] && rm "$outfile"
+#
+# tar xf "$outfile"
+# rm "$outfile"
+
+
