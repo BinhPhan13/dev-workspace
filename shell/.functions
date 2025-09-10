@@ -1,6 +1,6 @@
 #!/bin/sh
 
-detect_platform() {
+get_platform() {
   local os arch
   os=$(uname -s | tr '[:upper:]' '[:lower:]')
   arch=$(uname -m)
@@ -12,7 +12,7 @@ detect_platform() {
   echo "$os-$arch"
 }
 
-command_exists() {
+has_cmd() {
   command -v "$1" > /dev/null 2>&1
 }
 
@@ -46,12 +46,12 @@ die() {
     clean) clean="true"; shift;;
   esac
   log error "$1"
-  [ "$help" = "true" ] && command_exists show_help && show_help
-  [ "$clean" = "true" ] && command_exists cleanup && cleanup
+  [ "$help" = "true" ] && has_cmd usage && usage
+  [ "$clean" = "true" ] && has_cmd cleanup && cleanup
   exit 1
 }
 
-get_option() {
+get_opt() {
   local option_name="$1"
   local next_arg="$2"
 
