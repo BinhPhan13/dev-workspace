@@ -4,6 +4,9 @@ set -e
 self="$(dirname $0)"
 . "$self/../shell/.functions"
 
+need_cmd mkdir
+need_cmd curl
+
 usage() {
   echo "Usage: download [options] <url>"
   echo ""
@@ -22,32 +25,27 @@ while [ $# -gt 0 ]; do
     -h|--help) usage; exit 0;;
     -x) use_axel="true"; shift;;
     -o) outfile="$(get_opt "$@")"; shift 2;;
-    -*) die help "Unknown option '$1'";;
+    -*) die -h "Unknown option '$1'";;
     *)
       if [ -z "$url" ]; then url="$1"
-      else die help "Too many arguments provided"
+      else die -h "Too many arguments provided"
       fi; shift;;
   esac
 done
 
-
-exit 0
-
-# validate url and outdir
-[ -z "$url" ] && die help "URL argument is required"
+# validate url
+[ -z "$url" ] && die -h "URL argument is required"
 case "$url" in
   http://*|https://*|ftp://*);;
   *) die "Invalid URL format. Must start with http://, https://, or ftp://"
 esac
 
-[ -n "$outdir" ] && ! [ -d "$outdir" ] && die "Directory $outdir not exists"
-
 # build and execute command
+use_axel="${use_axel:-"false"}"
 if [ "$use_axel" = "true" ]; then
-  if command_exists axel; then
+  if has_cmd axel; then
     log info "Using axel downloader"
     set -- axel -cn5
-    [ -n "$outdir" ] && set -- $@ -o "$outdir"
   else
     log warning "axel not found, falling back to curl"
     use_axel="false"
@@ -56,21 +54,18 @@ fi
 
 if [ "$use_axel" = "false" ]; then
   log info "Using curl downloader"
-  if ! command_exists curl; then
-    die "curl is not installed or not in PATH"
-  fi
-  set -- curl -fLOC -
-  [ -n "$outdir" ] && set -- $@ --output-dir "$outdir"
+  set -- curl -fLC -
 fi
 
-set -- $@ "$url"
+[ -n "$outfile" ] && mkdir -pv "${outfile%/*}" && set -- "$@" -o "$outfile"
+
+set -- "$@" "$url"
 log info "Executing: $*"
 
-if $@; then
+if "$@"; then
     log success "Download completed successfully"
 else
-    exit_code=$?
-    log error "Download failed with exit code $exit_code"
-    exit $exit_code
+    log error "Download failed with exit code $?"
+    exit $?
 fi
 
