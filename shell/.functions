@@ -62,3 +62,43 @@ get_opt() {
   echo "$opt_value"
 }
 
+path_clean() {
+  # remove redundant slashes
+  [ -z "$1" ] && die "missing operand"
+  local out root _ifs
+  [ "${1#/}" != "$1" ] && root="/"
+  _ifs=$IFS; IFS='/'; set -- $1; IFS=$_ifs
+  for part in "$@"; do
+    [ -z "$part" ] && continue
+    [ -z "$out" ] && out="$part" || out="$out/$part"
+  done
+  echo "$root$out"
+}
+
+path_dir() {
+  local path="$(path_clean "$1")"
+  local out="${path%/*}"
+  case "$out" in
+    "") echo "/";;
+    "$path") echo ".";;
+    *) echo "$out";;
+  esac
+}
+
+path_base() {
+  local path="$(path_clean "$1")"
+  local out="${path##*/}"
+  case "$out" in
+    "") echo "/";;
+    *) echo "$out";;
+  esac
+}
+
+path_abs() {
+  local path="$(path_clean "$1")"
+  case "$path" in
+    /*) echo "$path";;
+    *) echo "$(pwd)/$path";;
+  esac
+}
+

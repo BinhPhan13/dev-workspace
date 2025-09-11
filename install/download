@@ -1,10 +1,8 @@
 #!/bin/sh
 set -e
 
-self="$(dirname $0)"
-. "$self/../shell/.functions"
+. "$HOME/.functions"
 
-need_cmd mkdir
 need_cmd curl
 
 usage() {
@@ -23,7 +21,7 @@ usage() {
 while [ $# -gt 0 ]; do
   case "$1" in
     -h|--help) usage; exit 0;;
-    -x) use_axel="true"; shift;;
+    -x) use_curl="false"; shift;;
     -o) outfile="$(get_opt "$@")"; shift 2;;
     -*) die -h "Unknown option '$1'";;
     *)
@@ -40,28 +38,39 @@ case "$url" in
   *) die "Invalid URL format. Must start with http://, https://, or ftp://"
 esac
 
+# validate outfile
+[ -n "outfile" ] && [ "${outfile%/}" != "$outfile" ] &&
+  die "'-o' must be file, not directory"
+
 # build and execute command
-use_axel="${use_axel:-"false"}"
-if [ "$use_axel" = "true" ]; then
+use_curl="${use_curl:-"true"}"
+if [ "$use_curl" = "false" ]; then
   if has_cmd axel; then
     log info "Using axel downloader"
     set -- axel -cn5
   else
     log warning "axel not found, falling back to curl"
-    use_axel="false"
+    use_curl="true"
   fi
 fi
 
-if [ "$use_axel" = "false" ]; then
+if [ "$use_curl" = "true" ]; then
   log info "Using curl downloader"
   set -- curl -fLC -
 fi
 
-[ -n "$outfile" ] && mkdir -pv "${outfile%/*}" && set -- "$@" -o "$outfile"
-
 set -- "$@" "$url"
-log info "Executing: $*"
 
+if [ -n "$outfile" ]; then
+  outfile="$(path_clean "$outfile")"
+  set -- "$@" -o "$outfile"
+  need_cmd mkdir
+  mkdir -pv "$(path_dir "$outfile")"
+elif [ "$use_curl" = "true" ]; then
+  set -- "$@" -O
+fi
+
+log info "Executing: $*"
 if "$@"; then
     log success "Download completed successfully"
 else
