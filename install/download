@@ -1,22 +1,20 @@
 #!/bin/sh
 set -e
 
-. "$HOME/.functions"
-
-need_cmd curl
+self="${0%/*}"; [ "$self" = "$0" ] && self="."
+. "$self/../shell/.functions"
 
 usage() {
-  echo "Usage: download [options] <url>"
+  echo "Usage: "$0" [options] <url>"
   echo ""
   echo "Options:"
-  echo "  -h         Show this help message"
-  echo "  -x         Use axel downloader (multi-connection)"
-  echo "  -o <file>  Custom output filename"
+  echo "  -h, --help   Show this help message"
+  echo "  -x           Use axel downloader (multi-connection)"
+  echo "  -o <file>    Custom output filename"
   echo ""
   echo "Arguments:"
   echo "  url        URL to download"
 }
-
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -56,6 +54,7 @@ fi
 
 if [ "$use_curl" = "true" ]; then
   log info "Using curl downloader"
+  need_cmd curl
   set -- curl -fLC -
 fi
 
