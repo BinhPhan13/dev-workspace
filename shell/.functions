@@ -102,3 +102,12 @@ path_abs() {
   esac
 }
 
+check_installed() {
+  [ -z "$1" ] && die "missing operand"
+  if [ -d "$1" ]; then
+    log warning "$1 exists, skip download"
+    log info "To reinstall, remove $1 first"
+    exit 0
+  fi
+}
+

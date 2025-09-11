@@ -1,0 +1,20 @@
+#!/bin/bash
+set -e
+
+self="${0%/*}"; [ "$self" = "$0" ] && self="."
+. "$self/../shell/.functions"
+
+need_cmd curl
+
+version=${1:-0.42.2}
+url="https://sw.kovidgoyal.net/kitty/installer.sh"
+dest="$HOME/opt"
+app="kitty.app"
+
+check_installed "$dest/$app"
+
+curl -fL "$url" | sh /dev/stdin \
+  installer="version-$version" dest="$dest" launch=n
+
+log success "kitty $version installed to $dest/$app"
+

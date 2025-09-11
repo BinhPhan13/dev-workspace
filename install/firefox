@@ -43,12 +43,9 @@ done
 url="https://download-installer.cdn.mozilla.net/pub/firefox/releases/"\
 "$version/$platform/$language/firefox-$version.tar.xz"
 dest="$HOME/opt"
+app="firefox"
 
-[ -d "$dest/firefox" ] && {
-  log warning "$dest/firefox exists, skip download"
-  log info "To reinstall, remove $dest/firefox first"
-  exit 0
-}
+check_installed "$dest/$app"
 
 [ -d "$dest" ] || {
   need_cmd mkdir
@@ -64,5 +61,5 @@ need_cmd rm
 tar xf "$outfile" -C "$dest" || die "Failed to extract Firefox tarball"
 rm "$outfile"
 
-log success "Firefox $version installed to $dest/firefox"
+log success "Firefox $version installed to $dest/$app"
 
