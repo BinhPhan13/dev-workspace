@@ -2,23 +2,25 @@
 set -e
 
 self="${0%/*}"; [ "$self" = "$0" ] && self="."
-. "$self/../shell/.functions"
+. "$self/utils.sh"
 
 usage() {
   echo "Usage: "$0" [options] <url>"
   echo ""
   echo "Options:"
-  echo "  -h, --help   Show this help message"
-  echo "  -x           Use axel downloader (multi-connection)"
-  echo "  -o <file>    Custom output filename"
+  echo "  --help      Show this help message"
+  echo "  -x          Use axel downloader (multi-connection)"
+  echo "  -o <file>   Custom output filename"
   echo ""
   echo "Arguments:"
-  echo "  url        URL to download"
+  echo "  url         URL to download"
 }
 
+# parse args
+use_curl="true"
 while [ $# -gt 0 ]; do
   case "$1" in
-    -h|--help) usage; exit 0;;
+    --help) usage; exit 0;;
     -x) use_curl="false"; shift;;
     -o) outfile="$(get_opt "$@")"; shift 2;;
     -*) die -h "Unknown option '$1'";;
@@ -29,19 +31,17 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-# validate url
+# validate input
 [ -z "$url" ] && die -h "URL argument is required"
 case "$url" in
   http://*|https://*|ftp://*);;
   *) die "Invalid URL format. Must start with http://, https://, or ftp://"
 esac
 
-# validate outfile
 [ -n "outfile" ] && [ "${outfile%/}" != "$outfile" ] &&
   die "'-o' must be file, not directory"
 
-# build and execute command
-use_curl="${use_curl:-"true"}"
+# build command
 if [ "$use_curl" = "false" ]; then
   if has_cmd axel; then
     log info "Using axel downloader"
@@ -55,25 +55,19 @@ fi
 if [ "$use_curl" = "true" ]; then
   log info "Using curl downloader"
   need_cmd curl
-  set -- curl -fLC -
+  set -- curl -# -fLC -
 fi
 
 set -- "$@" "$url"
 
 if [ -n "$outfile" ]; then
-  outfile="$(path_clean "$outfile")"
   set -- "$@" -o "$outfile"
-  need_cmd mkdir
   mkdir -pv "$(path_dir "$outfile")"
 elif [ "$use_curl" = "true" ]; then
   set -- "$@" -O
 fi
 
 log info "Executing: $*"
-if "$@"; then
-    log success "Download completed successfully"
-else
-    log error "Download failed with exit code $?"
-    exit $?
-fi
+"$@" && log success "Download completed" ||
+  die "Download failed with exit code $?"
 

@@ -1,25 +1,3 @@
-#!/bin/sh
-
-get_platform() {
-  local os arch
-  os=$(uname -s | tr '[:upper:]' '[:lower:]')
-  arch=$(uname -m)
-
-  case "$arch" in
-    x86_64|amd64) arch="amd64";;
-  esac
-
-  echo "$os-$arch"
-}
-
-has_cmd() {
-  command -v "$1" > /dev/null 2>&1
-}
-
-need_cmd() {
-  has_cmd "$1" || die "command '$1' is required"
-}
-
 log() {
   local prefix red green yellow blue nc
   red='\033[0;31m'
@@ -37,9 +15,8 @@ log() {
     *)
       echo "Usage: log <level> <message>"
       echo "level: debug, info, success, warning, error"
-      return 0;;
+      return 1;;
   esac
-
   printf "$prefix $2$nc\n" >&2
 }
 
@@ -60,6 +37,14 @@ get_opt() {
   [ -z "$opt_value" ] || [ "${opt_value#-}" != "$opt_value" ] &&
     die -h "'$opt_name' requires a value"
   echo "$opt_value"
+}
+
+has_cmd() {
+  command -v "$1" > /dev/null 2>&1
+}
+
+need_cmd() {
+  has_cmd "$1" || die "command '$1' is required"
 }
 
 path_clean() {
@@ -109,5 +94,18 @@ check_installed() {
     log info "To reinstall, remove $1 first"
     exit 0
   fi
+}
+
+
+get_platform() {
+  local os arch
+  os=$(uname -s | tr '[:upper:]' '[:lower:]')
+  arch=$(uname -m)
+
+  case "$arch" in
+    x86_64|amd64) arch="amd64";;
+  esac
+
+  echo "$os-$arch"
 }
 
