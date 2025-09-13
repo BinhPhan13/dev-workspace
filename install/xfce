@@ -31,7 +31,7 @@ rm -rf "$HOME/.config/pulse/"
 rm -rf "$HOME/.config/ibus/"
 EOF
 
-if ! grep -q 'clean && startxfce4' "$HOME/.profile"; then
+grep -q 'clean && startxfce4' "$HOME/.profile" ||
 cat >> $HOME/.profile << 'EOF'
 case "$(tty)" in
   /dev/tty*) clean && startxfce4;;
