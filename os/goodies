@@ -1,0 +1,22 @@
+#!/bin/sh
+set -e
+
+download() {
+pkgs="
+file man powertop
+curl telnet
+bash-completion
+vim
+xdg-utils
+libxcb-xkb1
+$([ "$(ps -p1 --no-headers -o comm)" = "systemd" ] && echo "" || echo "systemctl")
+"
+apt install -y --no-install-recommends $pkgs
+}
+
+setup() {
+  :
+}
+
+[ "$(id -u)" = "0" ] && download || setup
+
