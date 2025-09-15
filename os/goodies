@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+
+[ "$(id -u)" = "0" ] || {
+  echo "error: must run as root"
+  exit 1
+}
+
+pkgs="
+file man acpi powertop
+curl telnet
+bash-completion
+xdg-utils
+$([ "$(ps -p1 --no-headers -o comm)" = "systemd" ] && echo "" || echo "systemctl")
+"
+apt install -y --no-install-recommends $pkgs
+

@@ -1,0 +1,19 @@
+#!/bin/sh
+set -e
+
+download() {
+  pkgs="ibus-unikey im-config ibus-gtk3"
+  apt install -y --no-install-recommends $pkgs
+}
+
+setup() {
+  {
+    echo "[Desktop Entry]"
+    echo "Type=Application"
+    echo "Name=IBUS Input Method"
+    echo "Exec=ibus-daemon"
+  } | install -Dm644 /dev/stdin "$HOME/.config/autostart/IBUS.desktop"
+}
+
+[ "$(id -u)" = "0" ] && download || setup
+
