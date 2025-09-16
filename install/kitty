@@ -1,0 +1,53 @@
+#!/bin/sh
+set -e
+
+self="${0%/*}"
+[ "$self" = "$0" ] && self="."
+. "$self/utils.sh"
+
+name="kitty"
+check_installed opt $name
+trap "cleanup opt $name" EXIT INT TERM
+
+platform="x86_64"
+version="0.42.2"
+
+usage() {
+  cat >&2 <<EOF
+Usage: $0 [options]
+
+Options:
+  --help     Show this help message
+  -version   Kitty version (default '$version')
+EOF
+}
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --help)
+      usage
+      exit 0
+      ;;
+    -version)
+      version="$(get_opt "$@")"
+      echo "$version"
+      shift 2
+      ;;
+    -*) die -h "Unknown option '$1'" ;;
+    *) shift ;;
+  esac
+done
+
+url="https://github.com/kovidgoyal/kitty/releases/download/\
+v$version/kitty-$version-$platform.txz"
+
+dest="$HOME/.local/opt"
+[ -d "$dest" ] || mkdir -p "$dest"
+outfile="$dest/${url##*/}"
+
+fetch "$url" "$outfile"
+extract "$outfile" "$dest/kitty"
+rm "$outfile"
+
+log success "Kitty $version installed to $dest/$name"
+

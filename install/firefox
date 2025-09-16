@@ -1,0 +1,59 @@
+#!/bin/sh
+set -e
+
+self="${0%/*}"
+[ "$self" = "$0" ] && self="."
+. "$self/utils.sh"
+
+name="firefox"
+check_installed opt $name
+trap "cleanup opt $name" EXIT INT TERM
+
+platform="linux-x86_64"
+version="142.0.1"
+language="en-US"
+
+usage() {
+  cat >&2 <<EOF
+Usage: $0 [options]
+
+Options:
+  --help     Show this help message
+  -version   Firefox version (default '$version')
+  -lang      Firefox language (default '$language')
+EOF
+}
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --help)
+      usage
+      exit 0
+      ;;
+    -version)
+      version="$(get_opt "$@")"
+      echo "$version"
+      shift 2
+      ;;
+    -lang)
+      language="$(get_opt "$@")"
+      shift 2
+      ;;
+    -*) die -h "Unknown option '$1'" ;;
+    *) shift ;;
+  esac
+done
+
+url="https://download-installer.cdn.mozilla.net/pub/firefox/releases/\
+$version/$platform/$language/firefox-$version.tar.xz"
+
+dest="$HOME/.local/opt"
+[ -d "$dest" ] || mkdir -p "$dest"
+outfile="$dest/${url##*/}"
+
+fetch "$url" "$outfile"
+extract "$outfile" "$dest"
+rm "$outfile"
+
+log success "Firefox $version-$language installed to $dest/$name"
+
