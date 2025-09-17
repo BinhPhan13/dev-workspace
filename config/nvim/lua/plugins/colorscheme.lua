@@ -14,7 +14,7 @@ return {
       default_integrations = true,
       integrations = { leap = true },
     })
-    vim.cmd.colorscheme("catppuccin-mocha")
+    vim.cmd.colorscheme("catppuccin-macchiato")
   end,
 }
 
