@@ -1,0 +1,77 @@
+#!/bin/sh
+set -e
+
+self="${0%/*}"
+[ "$self" = "$0" ] && self="."
+. "$self/utils.sh"
+
+usage() {
+  cat >&2 <<EOF
+Usage: $0 [options]
+
+Options:
+  -help      Show this help message
+  -force     Force reinstallation
+  -version   Version to install (default '$version')
+  -lang      Language to install (default '$language')
+EOF
+}
+
+parse_args() {
+  platform="linux-x86_64"
+  version="142.0.1"
+  language="en-US"
+
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      -help)
+        usage
+        exit 0
+        ;;
+      -force)
+        force="true"
+        shift
+        ;;
+      -version)
+        version="$(get_opt "$@")"
+        echo "$version"
+        shift 2
+        ;;
+      -lang)
+        language="$(get_opt "$@")"
+        shift 2
+        ;;
+      -*) die -h "Unknown option '$1'" ;;
+      *) shift ;;
+    esac
+  done
+}
+
+parse_args "$@"
+
+cmd="firefox"
+has_cmd "$cmd" && [ -z "$force" ] &&
+  die "$cmd already installed, use -force to force reinstallation"
+
+log info "Installing $cmd $version $language"
+
+dest="$OPT_PATH/$cmd"
+[ -e "$dest" ] && rm -r "$dest"
+
+tmp_dir="$(mktemp -p "$OPT_PATH" -d "$cmd-install-XXX")"
+trap 'rm -rf "$tmp_dir"' EXIT INT TERM
+
+url="https://download-installer.cdn.mozilla.net/pub/firefox/releases/\
+$version/$platform/$language/firefox-$version.tar.xz"
+outfile="${url##*/}"
+
+cd "$tmp_dir"
+fetch "$url"
+extract "$outfile"
+
+xdir="firefox"
+mv "$xdir" -T "$dest"
+ln -sf "$dest/firefox" "$BIN_PATH/$cmd"
+
+log success "$cmd installed"
+

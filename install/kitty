@@ -1,0 +1,71 @@
+#!/bin/sh
+set -e
+
+self="${0%/*}"
+[ "$self" = "$0" ] && self="."
+. "$self/utils.sh"
+
+usage() {
+  cat >&2 <<EOF
+Usage: $0 [options]
+
+Options:
+  -help      Show this help message
+  -force     Force reinstallation
+  -version   Version to install (default '$version')
+EOF
+}
+
+parse_args() {
+  platform="x86_64"
+  version="0.42.2"
+
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      -help)
+        usage
+        exit 0
+        ;;
+      -force)
+        force="true"
+        shift
+        ;;
+      -version)
+        version="$(get_opt "$@")"
+        echo "$version"
+        shift 2
+        ;;
+      -*) die -h "Unknown option '$1'" ;;
+      *) shift ;;
+    esac
+  done
+}
+
+parse_args "$@"
+
+cmd="kitty"
+has_cmd "$cmd" && [ -z "$force" ] &&
+  die "$cmd already installed, use -force to force reinstallation"
+
+log info "Installing $cmd $version"
+
+dest="$OPT_PATH/$cmd"
+[ -e "$dest" ] && rm -r "$dest"
+
+tmp_dir="$(mktemp -p "$OPT_PATH" -d "$cmd-install-XXX")"
+trap 'rm -rf "$tmp_dir"' EXIT INT TERM
+
+url="https://github.com/kovidgoyal/kitty/releases/download/\
+v$version/kitty-$version-$platform.txz"
+outfile="${url##*/}"
+
+cd "$tmp_dir"
+fetch "$url"
+mkdir "$dest"
+extract "$outfile" "$dest"
+
+ln -sf "$dest/bin/kitty" "$BIN_PATH/$cmd"
+ln -sf "$dest/bin/kitten" "$BIN_PATH/kitten"
+
+log success "$cmd installed"
+
