@@ -1,4 +1,5 @@
 #!/bin/sh
-dir=${0%/*} && [ $dir = $0 ] && dir='.'
-cp -iv $dir/.[!.]* $HOME
+self="${0%/*}"
+[ "$self" = "$0" ] && self="."
+cp -iv $self/.[!.]* $HOME
 

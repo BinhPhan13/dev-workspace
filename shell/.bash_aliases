@@ -1,15 +1,9 @@
 # ls
-alias ls='ls --color=auto --group-directories-first -FX'
-alias la='ls -A'
-alias ll='ls -lh'
-alias l.='ls -d .[!.]*'
-
-# eza
-alias es='eza -F -s type'
-alias ea='es -A'
-alias el='ea -lgMh'
-alias e.='es -d .[!.]*'
-alias et='es -T'
+alias ls='ls --color=auto --group-directories-first -Fv'
+alias l='ls -lh'
+alias la='l -A'
+alias l.='l -d .[!.]*'
+alias lt='eza -T -F -s type'
 
 # cd
 alias ,='cd -'
@@ -27,6 +21,5 @@ alias dcp='docker compose pull'
 # misc
 alias tpi='watch -n1 ping -c1 github.com'
 alias tat='tmux attach'
-alias riv='rye init --virtual'
 alias lg='lazygit'
 
