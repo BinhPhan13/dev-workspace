@@ -58,8 +58,8 @@ cd "$tmp_dir"
 fetch "$url"
 extract "$outfile"
 
-install tmux -t "$BIN_PATH"
-install tmux.1 -Dt "$HOME/.local/share/man/man1" -m 644
+mv tmux "$BIN_PATH"
+mv tmux.1 "$MAN_PATH"
 
 log success "$cmd installed"
 

@@ -1,5 +1,7 @@
 BIN_PATH="$HOME/.local/bin" && mkdir -p "$BIN_PATH"
 OPT_PATH="$HOME/.local/opt" && mkdir -p "$OPT_PATH"
+MAN_PATH="$HOME/.local/share/man/man1" && mkdir -p "$MAN_PATH"
+CMP_PATH="$HOME/.local/bash-completion/completions" && mkdir -p "$CMP_PATH"
 
 log() {
   local prefix red green yellow blue nc

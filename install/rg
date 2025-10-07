@@ -60,9 +60,9 @@ fetch "$url"
 extract "$outfile"
 
 xdir="ripgrep-$version-$platform"
-install "$xdir/rg" -t "$BIN_PATH"
-install "$xdir/doc/rg.1" -Dt "$HOME/.local/share/man/man1" -m 644
-install "$xdir/complete/rg.bash" -Dt "$HOME/.local/share/bash-completion/completions" -m 644
+mv "$xdir/rg" "$BIN_PATH"
+mv "$xdir/doc/rg.1" "$MAN_PATH"
+mv "$xdir/complete/rg.bash" "$CMP_PATH"
 
 log success "$cmd installed"
 
