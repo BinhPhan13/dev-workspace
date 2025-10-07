@@ -4,11 +4,16 @@ set -e
 download() {
 pkgs="
 file man powertop
-curl telnet
+curl telnet axel
 bash-completion
+command-not-found
+progress
 vim
 xdg-utils
+xz-utils
+unzip
 libxcb-xkb1
+gcc
 $([ "$(ps -p1 --no-headers -o comm)" = "systemd" ] && echo "" || echo "systemctl")
 "
 apt install -y --no-install-recommends $pkgs
