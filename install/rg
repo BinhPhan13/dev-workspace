@@ -60,9 +60,9 @@ fetch "$url"
 extract "$outfile"
 
 xdir="ripgrep-$version-$platform"
-mv "$xdir/rg" "$BIN_PATH"
-mv "$xdir/doc/rg.1" "$MAN_PATH"
-mv "$xdir/complete/rg.bash" "$CMP_PATH/rg"
+mv "$xdir/rg" "$BIN_PATH/$cmd"
+mv "$xdir/doc/rg.1" "$MAN_PATH/$cmd.1"
+mv "$xdir/complete/rg.bash" "$CMP_PATH/$cmd"
 
 log success "$cmd installed"
 

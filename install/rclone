@@ -61,9 +61,9 @@ fetch "$url"
 extract "$outfile"
 
 xdir="rclone-$version-$platform"
-mv "$xdir/rclone" "$BIN_PATH"
-mv "$xdir/rclone.1" "$MAN_PATH"
-"$BIN_PATH/rclone" completion bash "$CMP_PATH/rclone"
+mv "$xdir/rclone" "$BIN_PATH/$cmd"
+mv "$xdir/rclone.1" "$MAN_PATH/$cmd.1"
+"$BIN_PATH/$cmd" completion bash "$CMP_PATH/$cmd"
 
 log success "$cmd installed"
 

@@ -58,8 +58,8 @@ cd "$tmp_dir"
 fetch "$url"
 extract "$outfile"
 
-mv tmux "$BIN_PATH"
-mv tmux.1 "$MAN_PATH"
+mv tmux "$BIN_PATH/$cmd"
+mv tmux.1 "$MAN_PATH/$cmd.1"
 
 log success "$cmd installed"
 
