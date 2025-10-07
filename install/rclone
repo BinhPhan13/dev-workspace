@@ -17,8 +17,8 @@ EOF
 }
 
 parse_args() {
-  platform="x86_64-unknown-linux-musl"
-  version="14.1.1"
+  platform="linux-amd64"
+  version="1.70.3"
 
   while [ $# -gt 0 ]; do
     case "$1" in
@@ -42,7 +42,7 @@ parse_args() {
 
 parse_args "$@"
 
-cmd="rg"
+cmd="rclone"
 has_cmd "$cmd" && [ -z "$force" ] &&
   die "$cmd already installed, use -force to force reinstallation"
 
@@ -51,18 +51,19 @@ log info "Installing $cmd $version"
 tmp_dir="$(mktemp -p "$OPT_PATH" -d "$cmd-install-XXX")"
 trap 'rm -rf "$tmp_dir"' EXIT INT TERM
 
-url="https://github.com/BurntSushi/ripgrep/releases/download/\
-$version/ripgrep-$version-$platform.tar.gz"
+version="v$version"
+url="https://github.com/rclone/rclone/releases/download/\
+$version/rclone-$version-$platform.zip"
 outfile="${url##*/}"
 
 cd "$tmp_dir"
 fetch "$url"
 extract "$outfile"
 
-xdir="ripgrep-$version-$platform"
-mv "$xdir/rg" "$BIN_PATH"
-mv "$xdir/doc/rg.1" "$MAN_PATH"
-mv "$xdir/complete/rg.bash" "$CMP_PATH/rg"
+xdir="rclone-$version-$platform"
+mv "$xdir/rclone" "$BIN_PATH"
+mv "$xdir/rclone.1" "$MAN_PATH"
+"$BIN_PATH/rclone" completion bash "$CMP_PATH/rclone"
 
 log success "$cmd installed"
 
