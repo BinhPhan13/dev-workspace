@@ -17,7 +17,7 @@ EOF
 }
 
 parse_args() {
-  version="3.5"
+  version="3.1.0"
 
   while [ $# -gt 0 ]; do
     case "$1" in
@@ -41,25 +41,31 @@ parse_args() {
 
 parse_args "$@"
 
-cmd="tmux"
+cmd="tpm"
 has_cmd "$cmd" && [ -z "$force" ] &&
   die "$cmd already installed, use -force to force reinstallation"
 
 log info "Installing $cmd $version"
 
+dest="$OPT_PATH/$cmd"
+[ -e "$dest" ] && rm -r "$dest"
+
 tmp_dir="$(mktemp -p "$OPT_PATH" -d "$cmd-install-XXX")"
 trap 'rm -rf "$tmp_dir"' EXIT INT TERM
 
-url="https://github.com/BinhPhan13/dev-workspace/releases/download/assets/\
-tmux-$version.tar.gz"
+url="https://github.com/tmux-plugins/tpm/archive/refs/tags/v$version.tar.gz"
 outfile="${url##*/}"
 
 cd "$tmp_dir"
 fetch "$url"
 extract "$outfile"
 
-install tmux -t "$BIN_PATH"
-install tmux.1 -Dt "$HOME/.local/share/man/man1" -m 644
+xdir="tpm-$version"
+mv "$xdir" -T "$dest"
+install /dev/stdin "$BIN_PATH/$cmd" <<EOF
+#!/bin/sh
+$dest/tpm
+EOF
 
 log success "$cmd installed"
 
