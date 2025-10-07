@@ -13,14 +13,12 @@ Options:
   -help      Show this help message
   -force     Force reinstallation
   -version   Version to install (default '$version')
-  -lang      Language to install (default '$language')
 EOF
 }
 
 parse_args() {
   platform="linux-x86_64"
-  version="142.0.1"
-  language="en-US"
+  version="0.11.4"
 
   while [ $# -gt 0 ]; do
     case "$1" in
@@ -36,10 +34,6 @@ parse_args() {
         version="$(get_opt "$@")"
         shift 2
         ;;
-      -lang)
-        language="$(get_opt "$@")"
-        shift 2
-        ;;
       -*) die -h "Unknown option '$1'" ;;
       *) shift ;;
     esac
@@ -48,11 +42,11 @@ parse_args() {
 
 parse_args "$@"
 
-cmd="firefox"
+cmd="nvim"
 has_cmd "$cmd" && [ -z "$force" ] &&
   die "$cmd already installed, use -force to force reinstallation"
 
-log info "Installing $cmd $version $language"
+log info "Installing $cmd $version"
 
 dest="$OPT_PATH/$cmd"
 [ -e "$dest" ] && rm -r "$dest"
@@ -60,17 +54,17 @@ dest="$OPT_PATH/$cmd"
 tmp_dir="$(mktemp -p "$OPT_PATH" -d "$cmd-install-XXX")"
 trap 'rm -rf "$tmp_dir"' EXIT INT TERM
 
-url="https://download-installer.cdn.mozilla.net/pub/firefox/releases/\
-$version/$platform/$language/firefox-$version.tar.xz"
+url="https://github.com/neovim/neovim/releases/download/\
+v$version/nvim-$platform.tar.gz"
 outfile="${url##*/}"
 
 cd "$tmp_dir"
 fetch "$url"
 extract "$outfile"
 
-xdir="firefox"
+xdir="nvim-$platform"
 mv "$xdir" -T "$dest"
-ln -sf "$dest/firefox" "$BIN_PATH/$cmd"
+ln -sf "$dest/bin/nvim" "$BIN_PATH/$cmd"
 
 log success "$cmd installed"
 

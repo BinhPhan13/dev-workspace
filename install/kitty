@@ -32,7 +32,6 @@ parse_args() {
         ;;
       -version)
         version="$(get_opt "$@")"
-        echo "$version"
         shift 2
         ;;
       -*) die -h "Unknown option '$1'" ;;

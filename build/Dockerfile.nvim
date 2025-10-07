@@ -1,0 +1,8 @@
+from debian:bullseye-slim
+run apt update && apt install -y ninja-build gettext cmake curl build-essential
+
+workdir /app
+arg version=0.11.4
+run curl -L https://github.com/neovim/neovim/archive/refs/tags/v$version.tar.gz -o hic && tar xf hic
+run cd neovim-$version && make CMAKE_BUILD_TYPE=Release && make CMAKE_INSTALL_PREFIX=/app install
+
