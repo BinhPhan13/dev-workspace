@@ -12,8 +12,8 @@ vim
 xdg-utils
 xz-utils
 unzip
+rsync
 libxcb-xkb1
-gcc
 $([ "$(ps -p1 --no-headers -o comm)" = "systemd" ] && echo "" || echo "systemctl")
 "
 apt install -y --no-install-recommends $pkgs
