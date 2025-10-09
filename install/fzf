@@ -1,0 +1,71 @@
+#!/bin/sh
+set -e
+
+self="${0%/*}"
+[ "$self" = "$0" ] && self="."
+. "$self/utils.sh"
+
+usage() {
+  cat >&2 <<EOF
+Usage: $0 [options]
+
+Options:
+  -help      Show this help message
+  -force     Force reinstallation
+  -version   Version to install (default '$version')
+EOF
+}
+
+parse_args() {
+  platform="linux_amd64"
+  version="0.65.2"
+
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      -help)
+        usage
+        exit 0
+        ;;
+      -force)
+        force="true"
+        shift
+        ;;
+      -version)
+        version="$(get_opt "$@")"
+        shift 2
+        ;;
+      -*) die -h "Unknown option '$1'" ;;
+      *) shift ;;
+    esac
+  done
+}
+
+parse_args "$@"
+
+cmd="fzf"
+has_cmd "$cmd" && [ -z "$force" ] &&
+  die "$cmd already installed, use -force to force reinstallation"
+
+log info "Installing $cmd $version"
+
+tmp_dir="$(mktemp -p "$OPT_PATH" -d "$cmd-install-XXX")"
+trap 'rm -rf "$tmp_dir"' EXIT INT TERM
+
+url="https://github.com/junegunn/fzf/releases/download/\
+v$version/fzf-$version-$platform.tar.gz"
+outfile="${url##*/}"
+
+cd "$tmp_dir"
+fetch "$url"
+extract "$outfile"
+
+mv "fzf" "$BIN_PATH/$cmd"
+
+grep -q 'eval "$(fzf --bash)"' "$HOME/.bashrc" || cat >> "$HOME/.bashrc" <<'EOF'
+export FZF_DEFAULT_OPTS="--height 50% --layout reverse --border \
+--walker-skip .git,node_modules,__pycache__,.venv"
+eval "$(fzf --bash)"
+EOF
+
+log success "$cmd installed"
+
