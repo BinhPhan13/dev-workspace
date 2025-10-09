@@ -1,0 +1,31 @@
+#!/bin/sh
+set -e
+
+self="${0%/*}"
+[ "$self" = "$0" ] && self="."
+. "$self/utils.sh"
+
+tools="
+dust
+fd
+fzf
+lazygit
+rclone
+rg
+nvim
+tmux
+tpm
+"
+
+log info "Will force install these tools: $tools"
+
+read -r -p "Continue? [y/N] " ans
+case "$ans" in
+  [Yy]);;
+  *) log info "Abort."; return;;
+esac
+
+echo $ans
+
+for tool in $tools; do "$self/$tool" -force || echo -n "" ; done
+
