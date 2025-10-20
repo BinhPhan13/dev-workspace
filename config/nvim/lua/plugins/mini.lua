@@ -1,23 +1,52 @@
-local function mini_icons()
+local mini_icons = function()
   require("mini.icons").setup({ style = 'glyph' })
   MiniIcons.mock_nvim_web_devicons()
   MiniIcons.tweak_lsp_kind()
 end
 
-local function mini_files()
-  -- toggle explorer
+local mini_files = function()
+  require("mini.files").setup({
+    mappings = {
+      go_in = 'l',
+      go_out = 'h',
+      go_in_plus = '',
+      go_out_plus = '',
+    },
+    options = {
+      permanent_delete = true,
+      use_as_default_explorer = true,
+    },
+    windows = {
+      max_number = math.huge,
+      preview = false,
+      width_nofocus = 30,
+      width_focus = 30,
+      width_preview = 30,
+    },
+  })
+
+  -- open explorer
+  local _is_active = function() return MiniFiles.get_explorer_state() end
   vim.keymap.set('n', '<leader>e', function()
-    if not MiniFiles.close() then MiniFiles.open() end
+    if _is_active() then return end
+    MiniFiles.open()
   end)
-  -- customize bookmark
+  vim.keymap.set('n', '<leader>E', function()
+    if _is_active() then return end
+    if vim.bo[0].buftype == 'nofile' then return end
+    MiniFiles.open(vim.api.nvim_buf_get_name(0), false)
+  end)
+
+  -- customized bookmarks
   vim.api.nvim_create_autocmd('User', {
     pattern = 'MiniFilesExplorerOpen',
     callback = function()
       MiniFiles.set_bookmark('c', vim.fn.stdpath('config'))
-      MiniFiles.set_bookmark('w', vim.fn.getcwd)
+      MiniFiles.set_bookmark('w', vim.fn.getcwd())
       MiniFiles.set_bookmark('h', '~')
     end,
   })
+
   -- toggle dot files
   local showdot = true
   local _fshow = function(fs_entry) return true end
@@ -29,62 +58,41 @@ local function mini_files()
     local filter = showdot and _fshow or _fhide
     MiniFiles.refresh({ content = { filter = filter } })
   end
+
   -- set focused directory as cwd
   local set_cwd = function()
     local path = (MiniFiles.get_fs_entry() or {}).path
-    if path ~= nil then vim.fn.chdir(vim.fs.dirname(path)) end
+    if path == nil then return end
+    vim.fn.chdir(vim.fs.dirname(path))
+    MiniFiles.close()
   end
+
   -- yank in register full path of entry under cursor
   local yank_path = function()
     local path = (MiniFiles.get_fs_entry() or {}).path
-    if path ~= nil then vim.fn.setreg(vim.v.register, path) end
+    if path ~= nil then vim.fn.setreg("+", path) end
   end
 
   vim.api.nvim_create_autocmd('User', {
     pattern = 'MiniFilesBufferCreate',
     callback = function(args)
-      local b = args.data.buf_id
-      vim.keymap.set('n', 'g.', toggle_dot, { buffer = b })
-      vim.keymap.set('n', 'gw', set_cwd,    { buffer = b })
-      vim.keymap.set('n', 'gy', yank_path,  { buffer = b })
+      local map = function (mod, lhs, rhs)
+        vim.keymap.set(mod, lhs, rhs, { buffer = args.data.buf_id })
+      end
+      map('n', '<C-h>', toggle_dot)
+      map('n', '<CR>', set_cwd)
+      map('n', 'gy', yank_path)
     end,
-  })
-
-  require("mini.files").setup({
-    mappings = {
-      go_in = '',
-      go_out = '',
-    },
-    options = {
-      permanent_delete = true,
-      use_as_default_explorer = true,
-    },
-    windows = {
-      max_number = math.huge,
-      preview = true,
-      width_focus = 25,
-      width_nofocus = 25,
-      width_preview = 50,
-    },
-  })
-end
-
-local function mini_tabline()
-  require("mini.tabline").setup({
-    -- format = function(buf_id, label)
-    --   local suffix = vim.bo[buf_id].modified and '+' or ''
-    --   return MiniTabline.default_format(buf_id, label) .. suffix
-    -- end,
-    tabpage_section = 'right',
   })
 end
 
 local function mini_statusline()
   vim.opt.showmode = false
   local mini = require("mini.statusline")
-  local function active()
+  local active = function()
     local mode, mode_hl = mini.section_mode({ trunc_width = 75 })
-    local filename = "%{fnamemodify(expand('%'), ':~:.')} %m%r"
+    local filename = vim.bo.buftype == 'nofile' and '' or
+      "%{fnamemodify(expand('%'), ':~:.')} %m%r"
 
     local filetype = "%{&filetype}"
     local percent = "%2p%%"
@@ -105,17 +113,28 @@ end
 
 local function mini_pick()
   local win_config = function()
-    local height = math.floor(0.75 * vim.o.lines)
-    local width = math.floor(0.5 * vim.o.columns)
+    local height = math.floor(0.85 * vim.o.lines)
+    local width = math.floor(0.75 * vim.o.columns)
     return {
       anchor = 'NW', height = height, width = width,
-      row = math.floor(0.3 * (vim.o.lines - height)),
+      row = math.floor(0.25 * (vim.o.lines - height)),
       col = math.floor(0.5 * (vim.o.columns - width)),
     }
   end
   require("mini.pick").setup({
     window = { config = win_config },
+    source = {
+      choose_marked = function(items)
+        for _,  item in ipairs(items) do MiniPick.default_choose(item) end
+      end
+    },
     mappings = {
+      choose            = '<CR>',
+      choose_in_split   = '<C-s>',
+      choose_in_vsplit  = '<C-v>',
+      choose_in_tabpage = '<C-t>',
+      choose_marked     = '<C-CR>',
+
       move_down  = '<C-j>',
       move_up    = '<C-k>',
       move_start = '<C-g>',
@@ -124,19 +143,13 @@ local function mini_pick()
       toggle_preview = '<C-p>',
       stop = '<Esc>',
 
-      choose            = '<CR>',
-      choose_in_split   = '<C-s>',
-      choose_in_vsplit  = '<C-v>',
-      choose_in_tabpage = '<C-t>',
-      choose_marked     = '',
-
       scroll_up    = '<C-u>',
       scroll_down  = '<C-d>',
       scroll_left  = '<C-h>',
       scroll_right = '<C-l>',
 
-      refine        = '<C-n>',
-      refine_marked = '<M-n>',
+      refine        = '<M-n>',
+      refine_marked = '<C-n>',
 
       delete_char       = '<BS>',
       delete_char_right = '<Del>',
@@ -144,23 +157,20 @@ local function mini_pick()
       delete_left       = '<C-0>',
 
       paste    = '<C-r>',
-      mark     = '<C-v>',
+      mark     = '<C-x>',
       mark_all = '<C-a>',
     },
   })
-  vim.keymap.set("n", "<leader>ff", MiniPick.builtin.files)
-  vim.keymap.set("n", "<leader>fb", MiniPick.builtin.buffers)
-  vim.keymap.set("n", "<leader>fgp", MiniPick.builtin.grep)
-  vim.keymap.set("n", "<leader>fgl", MiniPick.builtin.grep_live)
-  vim.keymap.set("n", "<leader>fh", function()
+  vim.ui.select = MiniPick.ui_select
+
+  vim.keymap.set('n', '<leader>ff', MiniPick.builtin.files)
+  vim.keymap.set('n', '<leader>fp', MiniPick.builtin.grep)
+  vim.keymap.set('n', '<leader>fl', MiniPick.builtin.grep_live)
+  vim.keymap.set('n', '<leader>fh', function()
     MiniPick.builtin.help({default_split = 'vertical'})
   end)
-  vim.keymap.set("n", "<leader>fc", function()
-    local cmd_str = vim.fn.input("Command: ")
-    local cmd = {}
-    for part in string.gmatch(cmd_str, '%S+') do table.insert(cmd, part) end
-    if next(cmd) then MiniPick.builtin.cli({ command = cmd }) end
-  end)
+  vim.keymap.set('n', '<leader>fb', MiniPick.builtin.buffers)
+  vim.keymap.set('n', '<leader>fc', MiniPick.builtin.resume)
 end
 
 local function mini_ai()
@@ -172,20 +182,20 @@ local function mini_ai()
     B = { '%b()', '^.%s*().-()%s*.$'},
     c = { '%b{}', '^.().*().$' },
     C = { '%b{}', '^.%s*().-()%s*.$'},
-    u = { '%b[]', '^.().*().$' },
-    U = { '%b[]', '^.%s*().-()%s*.$'},
-    y = { '%b<>', '^.().*().$' },
-    Y = { '%b<>', '^.%s*().-()%s*.$'},
+    o = { '%b[]', '^.().*().$' },
+    O = { '%b[]', '^.%s*().-()%s*.$'},
+    s = { '%b<>', '^.().*().$' },
+    S = { '%b<>', '^.%s*().-()%s*.$'},
     -- quotes
-    q = {{"'.-'", '".-"', '`.-`'}, '^.().*().$'},
-    k = { "'.-'", '^.().*().$' },
-    j = { '".-"', '^.().*().$' },
-    z = { '`.-`', '^.().*().$' },
+    q = {{"%b''", '%b""', '%b``'}, '^.().*().$'},
+    k = { "%b''", '^.().*().$' },
+    j = { '%b""', '^.().*().$' },
+    a = { '%b``', '^.().*().$' },
   }
   require("mini.ai").setup({
     custom_textobjects = custom_textobjects,
-    search_method = 'cover',
-    n_lines = 50,
+    search_method = 'cover_or_next',
+    n_lines = 70,
     silent = false,
   })
 end
@@ -218,19 +228,19 @@ local function mini_surround()
       input = { '%b{}', '^.%s*().-()%s*.$'},
       output = { left = '{', right = '}' }
     },
-    u = {
+    o = {
       input = { '%b[]', '^.().*().$' },
       output = { left = '[', right = ']' }
     },
-    U = {
+    O = {
       input = { '%b[]', '^.%s*().-()%s*.$'},
       output = { left = '[', right = ']' }
     },
-    y = {
+    s = {
       input = { '%b<>', '^.().*().$' },
       output = { left = '<', right = '>' }
     },
-    Y = {
+    S = {
       input = { '%b<>', '^.%s*().-()%s*.$'},
       output = { left = '<', right = '>' }
     },
@@ -247,24 +257,25 @@ local function mini_surround()
       input = { '".-"', '^.().*().$' },
       output = { left = '"', right = '"' }
     },
-    z = {
+    a = {
       input = { '`.-`', '^.().*().$' },
       output = { left = '`', right = '`' }
     },
   }
   require("mini.surround").setup({
     custom_surroundings = custom_surroundings,
-    search_method = 'cover',
-    n_lines = 50,
-    silent = true,
-    highlight_duration = 1000,
+    search_method = 'cover_or_next',
+    n_lines = 70,
+    silent = false,
+    highlight_duration = 500,
     respect_selection_type = true,
-    mappings = { add = 'sj' },
+    mappings = { add = 's' },
   })
 end
 
 local function mini_extra()
   require("mini.extra").setup()
+
   -- extra mini.ai
   local custom_textobjects = {
     G = MiniExtra.gen_ai_spec.buffer(),
@@ -276,16 +287,25 @@ local function mini_extra()
   for k, v in pairs(custom_textobjects) do
     MiniAi.config.custom_textobjects[k] = v
   end
+
   -- extra mini.pick
   vim.keymap.set("n", "<leader>fd", MiniExtra.pickers.diagnostic)
-  vim.keymap.set("n", "<leader>fm", MiniExtra.pickers.marks)
-  vim.keymap.set("n", "<leader>fe", MiniExtra.pickers.explorer)
-  vim.keymap.set("n", "<leader>fgh", MiniExtra.pickers.git_hunks)
-  vim.keymap.set("n", "<leader>fo", MiniExtra.pickers.oldfiles)
-  vim.keymap.set("n", "<leader>fr", function()
+  vim.keymap.set("n", "<leader>fjr", function()
     MiniExtra.pickers.lsp({ scope = "references" })
   end)
+  vim.keymap.set("n", "<leader>fjd", function()
+    MiniExtra.pickers.lsp({ scope = "definition" })
+  end)
+
+  vim.keymap.set("n", "<leader>fgh", MiniExtra.pickers.git_hunks)
+  vim.keymap.set("n", "<leader>fgc", MiniExtra.pickers.git_commits)
+  vim.keymap.set("n", "<leader>fgb", MiniExtra.pickers.git_branches)
+  vim.keymap.set("n", "<leader>fgg", MiniExtra.pickers.git_files)
+
+  vim.keymap.set("n", "<leader>fm", MiniExtra.pickers.marks)
   vim.keymap.set("n", "<leader>fk", MiniExtra.pickers.keymaps)
+  vim.keymap.set("n", "<leader>fr", MiniExtra.pickers.registers)
+  vim.keymap.set("n", "<leader>fo", MiniExtra.pickers.oldfiles)
 end
 
 local function mini_completion()
@@ -338,10 +358,9 @@ local function mini_pairs()
       ['"'] = { action = 'closeopen', pair = '""', neigh_pattern = '[^\\].', register = { cr = true } },
       ["'"] = { action = 'closeopen', pair = "''", neigh_pattern = '[^\\].', register = { cr = true } },
       ['`'] = { action = 'closeopen', pair = '``', neigh_pattern = '[^\\].', register = { cr = true } },
-
   }
-  require("mini.pairs").setup({ mappings = mappings })
 
+  require("mini.pairs").setup({ mappings = mappings })
   local map_bs = function(lhs, rhs)
     vim.keymap.set('i', lhs, rhs, { expr = true, replace_keycodes = false })
   end
@@ -350,18 +369,35 @@ local function mini_pairs()
   map_bs('<C-u>', 'v:lua.MiniPairs.bs("\21")')
 end
 
-local function mini_bufremove()
-  require("mini.bufremove").setup({})
-  vim.keymap.set("n", "<leader>bd", MiniBufremove.wipeout)
-  vim.keymap.set("n", "<leader>bD", vim.cmd.bd)
+local mini_sessions = function()
+  vim.opt.sessionoptions:append 'globals'
+  require('mini.sessions').setup({
+    autoread = false,
+    autowrite = true,
+    directory = vim.fn.stdpath('data') .. '/session',
+    force = { delete = true },
+    verbose = { write = false, delete = false },
+    hooks = {
+      pre = { write = function()
+        vim.api.nvim_exec_autocmds('User', {pattern = 'SessionSavePre'})
+      end },
+    },
+  })
+  vim.keymap.set('n', '<leader>ss', function()
+    vim.ui.input({ prompt = 'Session name: ' }, function(input)
+      if input then MiniSessions.write(input) end
+    end)
+  end)
+  vim.keymap.set('n', '<leader>sr', function() MiniSessions.select('read') end)
+  vim.keymap.set('n', '<leader>sd', function() MiniSessions.select('delete') end)
 end
 
 return {
   "echasnovski/mini.nvim",
+  priority = 500,
   config = function()
     mini_icons()
     mini_files()
-    mini_tabline()
     mini_statusline()
 
     mini_pick()
@@ -369,11 +405,11 @@ return {
     mini_surround()
     mini_extra()
 
-    mini_diff()
-    mini_completion()
+    -- mini_diff()
+    -- mini_completion()
     -- mini_pairs()
 
-    mini_bufremove()
+    mini_sessions()
   end,
 }
 

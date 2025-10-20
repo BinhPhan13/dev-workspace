@@ -19,15 +19,6 @@ vim.keymap.set("n", "<C-p>", "mzgpkV'zj")
 -- substitute globally word under cursor
 vim.keymap.set("n", "S", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/g<Left><Left>")
 
--- chdir
-vim.keymap.set("n", "<leader>c", ":cd ")
-vim.keymap.set("n", "<leader>C", function()
-  bufpath = vim.api.nvim_buf_get_name(0)
-  dirpath = vim.fn.fnamemodify(bufpath, ":h")
-  print(dirpath)
-  vim.cmd.cd(dirpath)
-end)
-
 -- move
 vim.keymap.set("n", "<C-M-j>", function()
   return pcall(vim.cmd, "m+" .. vim.v.count1)
@@ -46,15 +37,12 @@ vim.keymap.set({"n", "x"}, "N", "Nzz")
 vim.keymap.set({"n", "x"}, "<M-k>", "{")
 vim.keymap.set({"n", "x"}, "<M-j>", "}")
 
--- buffer
-vim.keymap.set("n", "<M-l>", vim.cmd.bn)
-vim.keymap.set("n", "<M-h>", vim.cmd.bN)
-
 -- tab
 vim.keymap.set("n", "<leader>to", function()
   bufpath = vim.api.nvim_buf_get_name(0)
   pcall(vim.cmd.tabe, bufpath)
 end)
+vim.keymap.set("n", "<leader>tn", function() pcall(vim.cmd.tabnew) end)
 vim.keymap.set("n", "<leader>tx", function() pcall(vim.cmd.tabc) end)
 
 -- terminal mode

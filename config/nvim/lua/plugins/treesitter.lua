@@ -1,3 +1,4 @@
+-- MUST HAVE GCC INSTALLED
 local function config()
   require("nvim-treesitter.configs").setup({
     ensure_installed = {
@@ -10,10 +11,11 @@ local function config()
       "lua",
       "c",
 
-      "python",
       "sql",
-      "go",
+      "python",
       "bash",
+      "go",
+      "rust",
     },
     sync_install = false,
     auto_install = false,
@@ -34,13 +36,7 @@ local function config()
       end
     },
     incremental_selection = {
-      enable = true,
-      keymaps = {
-        init_selection = "<C-s>",
-        node_incremental = "<C-s>",
-        scope_incremental = false,
-        node_decremental = "<BS>",
-      }
+      enable = false,
     },
   })
 end
