@@ -313,22 +313,6 @@ local function mini_extra()
   vim.keymap.set("n", "<leader>fo", MiniExtra.pickers.oldfiles)
 end
 
-local function mini_diff()
-  require('mini.diff').setup({
-    mappings = { apply = '', reset = 'gh' },
-    view = {
-      style = 'sign',
-      signs = {
-        add    = "║",
-        change = "║",
-        delete = "║",
-      }
-    },
-  })
-  vim.keymap.set('n', '<leader>hv', MiniDiff.toggle_overlay)
-  vim.keymap.set('n', '<leader>hV', MiniDiff.toggle)
-end
-
 local function mini_pairs()
   local mappings = {
       ['('] = { action = 'open', pair = '()', neigh_pattern = '[^\\].' },
@@ -368,7 +352,6 @@ return {
     mini_surround()
     mini_extra()
 
-    -- mini_diff()
     -- mini_pairs()
   end,
 }
