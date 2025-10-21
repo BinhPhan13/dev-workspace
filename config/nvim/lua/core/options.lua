@@ -45,5 +45,5 @@ opt.undodir = vim.fn.stdpath('state') .. '/undo'
 opt.inccommand = "nosplit"
 opt.backspace = "indent,eol,start"
 opt.swapfile = false
-opt.timeoutlen = 3000
+opt.timeoutlen = 1500
 

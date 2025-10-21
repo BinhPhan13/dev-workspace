@@ -33,7 +33,7 @@ local mini_files = function()
   end)
   vim.keymap.set('n', '<leader>E', function()
     if _is_active() then return end
-    if vim.bo[0].buftype == 'nofile' then return end
+    if not vim.bo.buflisted then return end
     MiniFiles.open(vim.api.nvim_buf_get_name(0), false)
   end)
 
@@ -86,7 +86,7 @@ local mini_files = function()
   })
 end
 
-local function mini_statusline()
+local mini_statusline = function()
   vim.opt.showmode = false
   local mini = require("mini.statusline")
   local active = function()
@@ -95,7 +95,7 @@ local function mini_statusline()
       signs = { ERROR = '!', WARN = '?', INFO = '@', HINT = '*' },
       trunc_width = 75,
     })
-    local filename = vim.bo.buftype == 'nofile' and '' or
+    local filename = not vim.bo.buflisted and '' or
       "%{fnamemodify(expand('%'), ':~:.')} %m%r"
 
     local filetype = "%{&filetype}"
@@ -116,7 +116,7 @@ local function mini_statusline()
   mini.setup({ content = { active = active } })
 end
 
-local function mini_pick()
+local mini_pick = function()
   local win_config = function()
     local height = math.floor(0.85 * vim.o.lines)
     local width = math.floor(0.75 * vim.o.columns)
@@ -178,19 +178,19 @@ local function mini_pick()
   vim.keymap.set('n', '<leader>fc', MiniPick.builtin.resume)
 end
 
-local function mini_ai()
+local mini_ai = function()
   local custom_textobjects = {
     -- brackets
     r = {{'%b()', '%b{}', '%b[]', '%b<>'}, '^.().*().$'},
     R = {{'%b()', '%b{}', '%b[]', '%b<>'}, '^.%s*().-()%s*.$'},
     b = { '%b()', '^.().*().$' },
-    B = { '%b()', '^.%s*().-()%s*.$'},
+    B = { '%b()', '^.%s*().-()%s*.$' },
     c = { '%b{}', '^.().*().$' },
-    C = { '%b{}', '^.%s*().-()%s*.$'},
+    C = { '%b{}', '^.%s*().-()%s*.$' },
     o = { '%b[]', '^.().*().$' },
-    O = { '%b[]', '^.%s*().-()%s*.$'},
+    O = { '%b[]', '^.%s*().-()%s*.$' },
     s = { '%b<>', '^.().*().$' },
-    S = { '%b<>', '^.%s*().-()%s*.$'},
+    S = { '%b<>', '^.%s*().-()%s*.$' },
     -- quotes
     q = {{"%b''", '%b""', '%b``'}, '^.().*().$'},
     k = { "%b''", '^.().*().$' },
@@ -205,7 +205,7 @@ local function mini_ai()
   })
 end
 
-local function mini_surround()
+local mini_surround = function()
   vim.keymap.set({"n", "x"}, "s", "<nop>")
   local custom_surroundings = {
     -- brackets
@@ -222,32 +222,32 @@ local function mini_surround()
       output = { left = '(', right = ')' }
     },
     B = {
-      input = { '%b()', '^.%s*().-()%s*.$'},
-      output = { left = '(', right = ')' }
+      input = { '%b()', '^.%s*().-()%s*.$' },
+      output = { left = '( ', right = ' )' }
     },
     c = {
       input = { '%b{}', '^.().*().$' },
       output = { left = '{', right = '}' }
     },
     C = {
-      input = { '%b{}', '^.%s*().-()%s*.$'},
-      output = { left = '{', right = '}' }
+      input = { '%b{}', '^.%s*().-()%s*.$' },
+      output = { left = '{ ', right = ' }' }
     },
     o = {
       input = { '%b[]', '^.().*().$' },
       output = { left = '[', right = ']' }
     },
     O = {
-      input = { '%b[]', '^.%s*().-()%s*.$'},
-      output = { left = '[', right = ']' }
+      input = { '%b[]', '^.%s*().-()%s*.$' },
+      output = { left = '[ ', right = ' ]' }
     },
     s = {
       input = { '%b<>', '^.().*().$' },
       output = { left = '<', right = '>' }
     },
     S = {
-      input = { '%b<>', '^.%s*().-()%s*.$'},
-      output = { left = '<', right = '>' }
+      input = { '%b<>', '^.%s*().-()%s*.$' },
+      output = { left = '< ', right = ' >' }
     },
     -- quotes
     q = {
@@ -278,7 +278,7 @@ local function mini_surround()
   })
 end
 
-local function mini_extra()
+local mini_extra = function()
   require("mini.extra").setup()
 
   -- extra mini.ai
@@ -313,7 +313,26 @@ local function mini_extra()
   vim.keymap.set("n", "<leader>fo", MiniExtra.pickers.oldfiles)
 end
 
-local function mini_pairs()
+local mini_move = function()
+  require('mini.move').setup({
+    mappings = {
+      left  = '',
+      right = '',
+      down  = 'J',
+      up    = 'K',
+
+      line_left = '',
+      line_right = '',
+      line_down = '<C-M-j>',
+      line_up = '<C-M-k>',
+    },
+    options = {
+      reindent_linewise = false,
+    },
+  })
+end
+
+local mini_pairs = function()
   local mappings = {
       ['('] = { action = 'open', pair = '()', neigh_pattern = '[^\\].' },
       ['['] = { action = 'open', pair = '[]', neigh_pattern = '[^\\].' },
@@ -352,6 +371,7 @@ return {
     mini_surround()
     mini_extra()
 
+    mini_move()
     -- mini_pairs()
   end,
 }
