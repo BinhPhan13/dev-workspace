@@ -313,25 +313,6 @@ local function mini_extra()
   vim.keymap.set("n", "<leader>fo", MiniExtra.pickers.oldfiles)
 end
 
-local function mini_completion()
-  require("mini.completion").setup({
-    lsp_completion = { source_func = 'omnifunc' },
-    window = {
-      info = { height = 30, width = 70 },
-      signature = { height = 30, width = 70 },
-    },
-    fallback_action = '<C-n>',
-    mappings = {
-      force_twostep = '<M-n>',
-      force_fallback = '<M-S-n>',
-      scroll_up = '<M-u>',
-      scroll_down = '<M-d>',
-    }
-  })
-  vim.opt.completeopt:append('fuzzy')
-  vim.lsp.config('*', {capabilities = MiniCompletion.get_lsp_capabilities()})
-end
-
 local function mini_diff()
   require('mini.diff').setup({
     mappings = { apply = '', reset = 'gh' },
@@ -374,29 +355,6 @@ local function mini_pairs()
   map_bs('<C-u>', 'v:lua.MiniPairs.bs("\21")')
 end
 
-local mini_sessions = function()
-  vim.opt.sessionoptions:append 'globals'
-  require('mini.sessions').setup({
-    autoread = false,
-    autowrite = true,
-    directory = vim.fn.stdpath('data') .. '/session',
-    force = { delete = true },
-    verbose = { write = false, delete = false },
-    hooks = {
-      pre = { write = function()
-        vim.api.nvim_exec_autocmds('User', {pattern = 'SessionSavePre'})
-      end },
-    },
-  })
-  vim.keymap.set('n', '<leader>ss', function()
-    vim.ui.input({ prompt = 'Session name: ' }, function(input)
-      if input then MiniSessions.write(input) end
-    end)
-  end)
-  vim.keymap.set('n', '<leader>sr', function() MiniSessions.select('read') end)
-  vim.keymap.set('n', '<leader>sd', function() MiniSessions.select('delete') end)
-end
-
 return {
   "echasnovski/mini.nvim",
   priority = 500,
@@ -411,10 +369,7 @@ return {
     mini_extra()
 
     -- mini_diff()
-    -- mini_completion()
     -- mini_pairs()
-
-    mini_sessions()
   end,
 }
 
