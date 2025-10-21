@@ -91,6 +91,10 @@ local function mini_statusline()
   local mini = require("mini.statusline")
   local active = function()
     local mode, mode_hl = mini.section_mode({ trunc_width = 75 })
+    local diagnostics   = MiniStatusline.section_diagnostics({
+      signs = { ERROR = '!', WARN = '?', INFO = '@', HINT = '*' },
+      trunc_width = 75,
+    })
     local filename = vim.bo.buftype == 'nofile' and '' or
       "%{fnamemodify(expand('%'), ':~:.')} %m%r"
 
@@ -100,6 +104,7 @@ local function mini_statusline()
 
     return mini.combine_groups({
       { hl = mode_hl, strings = { mode } },
+      { hl = 'MiniStatuslineDevinfo',  strings = { diagnostics } },
       "%<", -- Mark general truncate point
       { hl = "MiniStatuslineFilename", strings = { filename } },
       "%=", -- End left alignment

@@ -23,6 +23,27 @@ return {
       'basedpyright',
       'ruff',
     })
+
+    vim.lsp.config('ruff', {
+      init_options = { settings = {
+        lineLength = 80,
+        lint = { enable = false },
+      }}
+    })
+
+    vim.lsp.config('basedpyright', {
+      settings = { basedpyright = {
+        analysis = {
+          autoImportCompletions = true,
+          autoSearchPaths = true,
+          useLibraryCodeForTypes = true,
+
+          typeCheckingMode = "standard",
+          diagnosticMode = "openFilesOnly",
+        },
+      }}
+    })
+
   end
 }
 
