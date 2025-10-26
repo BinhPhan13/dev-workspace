@@ -332,32 +332,6 @@ local mini_move = function()
   })
 end
 
-local mini_pairs = function()
-  local mappings = {
-      ['('] = { action = 'open', pair = '()', neigh_pattern = '[^\\].' },
-      ['['] = { action = 'open', pair = '[]', neigh_pattern = '[^\\].' },
-      ['{'] = { action = 'open', pair = '{}', neigh_pattern = '[^\\].' },
-      ['<'] = { action = 'open', pair = '<>', neigh_pattern = '\r.' },
-
-      [')'] = { action = 'close', pair = '()', neigh_pattern = '[^\\].' },
-      [']'] = { action = 'close', pair = '[]', neigh_pattern = '[^\\].' },
-      ['}'] = { action = 'close', pair = '{}', neigh_pattern = '[^\\].' },
-      ['>'] = { action = 'close', pair = '<>', neigh_pattern = '\r.' },
-
-      ['"'] = { action = 'closeopen', pair = '""', neigh_pattern = '[^\\].', register = { cr = true } },
-      ["'"] = { action = 'closeopen', pair = "''", neigh_pattern = '[^\\].', register = { cr = true } },
-      ['`'] = { action = 'closeopen', pair = '``', neigh_pattern = '[^\\].', register = { cr = true } },
-  }
-
-  require("mini.pairs").setup({ mappings = mappings })
-  local map_bs = function(lhs, rhs)
-    vim.keymap.set('i', lhs, rhs, { expr = true, replace_keycodes = false })
-  end
-  map_bs('<C-h>', 'v:lua.MiniPairs.bs()')
-  map_bs('<C-w>', 'v:lua.MiniPairs.bs("\23")')
-  map_bs('<C-u>', 'v:lua.MiniPairs.bs("\21")')
-end
-
 return {
   "echasnovski/mini.nvim",
   priority = 500,
@@ -372,7 +346,6 @@ return {
     mini_extra()
 
     mini_move()
-    -- mini_pairs()
   end,
 }
 
