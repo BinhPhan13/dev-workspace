@@ -13,7 +13,7 @@ return {
       preset = 'none',
       ['<C-j>'] = { 'select_next', 'fallback' },
       ['<C-k>'] = { 'select_prev', 'fallback' },
-      ['<CR>'] = { 'select_and_accept', 'fallback' },
+      ['<CR>'] = { 'accept', 'fallback' },
       ['<C-e>'] = { 'hide', 'fallback' },
       ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
       ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
@@ -26,6 +26,10 @@ return {
         preselect = false,
         auto_insert = false,
       }},
+      accept = {
+        dot_repeat = true,
+        create_undo_point = false,
+      },
 
       documentation = { auto_show = false },
       menu = {

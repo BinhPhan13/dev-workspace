@@ -174,7 +174,9 @@ local mini_pick = function()
   vim.keymap.set('n', '<leader>fh', function()
     MiniPick.builtin.help({default_split = 'vertical'})
   end)
-  vim.keymap.set('n', '<leader>fb', MiniPick.builtin.buffers)
+  vim.keymap.set('n', '<leader>fb', function()
+    MiniPick.builtin.buffers({ include_unlisted = true })
+  end)
   vim.keymap.set('n', '<leader>fc', MiniPick.builtin.resume)
 end
 
@@ -323,8 +325,8 @@ local mini_move = function()
 
       line_left = '',
       line_right = '',
-      line_down = '<C-M-j>',
-      line_up = '<C-M-k>',
+      line_down = '<M-J>',
+      line_up = '<M-K>',
     },
     options = {
       reindent_linewise = false,
