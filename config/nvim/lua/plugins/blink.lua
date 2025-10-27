@@ -1,9 +1,15 @@
 return {
   'saghen/blink.cmp',
+  event = "InsertEnter",
+  dependencies = { 'rafamadriz/friendly-snippets' },
   opts = {
-    fuzzy = { implementation = "prefer_rust" },
+    fuzzy = {
+      implementation = "prefer_rust",
+      sorts = { 'exact', 'score', 'sort_text', 'kind' }
+    },
+    snippets = { preset = 'mini_snippets' },
     sources = {
-      default = { 'lsp', 'buffer', 'snippets', 'path' },
+      default = { 'snippets', 'lsp', 'buffer', 'path' },
       providers = {
         lsp = { fallbacks = {} }
       }
@@ -19,6 +25,7 @@ return {
       ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
       ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
     },
+
     completion = {
       keyword = { range = 'full' },
       trigger = { prefetch_on_insert = false },

@@ -334,6 +334,19 @@ local mini_move = function()
   })
 end
 
+local mini_snippets = function()
+  require('mini.snippets').setup({})
+  MiniSnippets.config.mappings = {
+      expand = '',
+      jump_next = '<C-l>',
+      jump_prev = '<C-h>',
+      stop = '<esc>',
+  }
+  MiniSnippets.config.snippets = {
+    MiniSnippets.gen_loader.from_lang()
+  }
+end
+
 return {
   "echasnovski/mini.nvim",
   priority = 500,
@@ -347,6 +360,7 @@ return {
     mini_surround()
     mini_extra()
 
+    mini_snippets()
     mini_move()
   end,
 }
