@@ -334,6 +334,53 @@ local mini_move = function()
   })
 end
 
+local mini_splitjoin = function()
+  require('mini.splitjoin').setup({
+    mappings = { toggle = 'gs' },
+    detect = {
+      brackets = { '%b()', '%b[]', '%b{}', '%b<>' },
+      separator = ',',
+      exclude_regions = {
+        '%b()', '%b[]', '%b{}', '%b<>',
+        '%b""', "%b''", '%b``',
+      },
+    }
+  })
+
+  local gen_hook = MiniSplitjoin.gen_hook
+  MiniSplitjoin.config.split.hooks_post = { gen_hook.add_trailing_separator() }
+  MiniSplitjoin.config.join.hooks_post = { gen_hook.del_trailing_separator() }
+end
+
+local mini_notify = function()
+  require('mini.notify').setup({
+    content = {
+      format = function(notif)
+        if notif.data.source == 'lsp_progress' then return notif.msg end
+        return MiniNotify.default_format(notif)
+      end,
+
+      sort = function(notif_arr)
+        table.sort(
+          notif_arr,
+          function(a, b) return a.ts_update > b.ts_update end
+        )
+        return notif_arr
+      end,
+    },
+    window = { winblend = 0 }
+  })
+
+  vim.notify = MiniNotify.make_notify({
+    ERROR = { duration = 7000,  hl_group = 'DiagnosticError'  },
+    WARN  = { duration = 5000,  hl_group = 'DiagnosticWarn'   },
+    INFO  = { duration = 5000,  hl_group = 'DiagnosticInfo'   },
+    DEBUG = { duration = 1000,  hl_group = 'DiagnosticHint'   },
+    TRACE = { duration = 1000,  hl_group = 'DiagnosticOk'     },
+    OFF   = { duration = 1000,  hl_group = 'MiniNotifyNormal' },
+  })
+end
+
 local mini_snippets = function()
   require('mini.snippets').setup({})
   MiniSnippets.config.mappings = {
@@ -352,6 +399,8 @@ return {
   priority = 500,
   config = function()
     mini_icons()
+    mini_notify()
+
     mini_files()
     mini_statusline()
 
@@ -362,6 +411,7 @@ return {
 
     mini_snippets()
     mini_move()
+    mini_splitjoin()
   end,
 }
 

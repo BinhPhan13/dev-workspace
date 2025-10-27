@@ -36,6 +36,9 @@ vim.keymap.set("n", "<C-p>", "mzgpkV'zj")
 -- clear command line
 vim.keymap.set("n", "<Esc>", ":<BS>")
 
+-- toggle hlsearch
+vim.keymap.set("n", "gh", function() vim.cmd.set('hlsearch!') end)
+
 -- remove trailspace
 vim.keymap.set("n", "Q", function()
   vim.cmd("silent! %s/\\s\\+$//g")
