@@ -72,9 +72,6 @@ esac
 unset nc black BLACK red RED green GREEN yellow YELLOW blue BLUE pink PINK cyan CYAN gray GRAY
 unset color_prompt chroot_prompt
 
-# default visual editor
-export VISUAL=vi
-
 # add to PATH
 addpath() {
   if [ -d $1 ]; then
@@ -85,4 +82,12 @@ addpath $HOME/.local/bin
 # sbin directories, useful on systems that have sudo
 addpath /sbin
 addpath /usr/sbin
+
+# default visual editor
+export VISUAL=vi
+command -v nvim &>/dev/null && VISUAL=nvim
+
+export FZF_DEFAULT_OPTS="--height 50% --layout reverse --border \
+--walker-skip .git,node_modules,__pycache__,.venv"
+eval "$(fzf --bash)"
 

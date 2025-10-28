@@ -22,4 +22,5 @@ alias dcp='docker compose pull'
 alias tpi='watch -n1 ping -c1 github.com'
 alias tat='tmux attach'
 alias lg='lazygit'
+alias uvr='uv run'
 

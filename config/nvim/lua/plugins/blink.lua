@@ -11,7 +11,11 @@ return {
     sources = {
       default = { 'snippets', 'lsp', 'buffer', 'path' },
       providers = {
-        lsp = { fallbacks = {} }
+        lsp = { fallbacks = {} },
+        path = { opts = {
+          get_cwd = function(ctx) return vim.fn.getcwd() end,
+          show_hidden_files_by_default = true,
+        }},
       }
     },
 
