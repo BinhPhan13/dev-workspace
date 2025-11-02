@@ -38,7 +38,7 @@ opt.scrolloff = 3
 opt.laststatus = 3
 
 -- undo persistence
-opt.undofile = true
+opt.undofile = false
 opt.undodir = vim.fn.stdpath('state') .. '/undo'
 
 -- misc

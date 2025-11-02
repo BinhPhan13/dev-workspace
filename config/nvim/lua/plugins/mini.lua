@@ -372,9 +372,9 @@ local mini_notify = function()
   })
 
   vim.notify = MiniNotify.make_notify({
-    ERROR = { duration = 7000,  hl_group = 'DiagnosticError'  },
-    WARN  = { duration = 5000,  hl_group = 'DiagnosticWarn'   },
-    INFO  = { duration = 5000,  hl_group = 'DiagnosticInfo'   },
+    ERROR = { duration = 5000,  hl_group = 'DiagnosticError'  },
+    WARN  = { duration = 3000,  hl_group = 'DiagnosticWarn'   },
+    INFO  = { duration = 3000,  hl_group = 'DiagnosticInfo'   },
     DEBUG = { duration = 1000,  hl_group = 'DiagnosticHint'   },
     TRACE = { duration = 1000,  hl_group = 'DiagnosticOk'     },
     OFF   = { duration = 1000,  hl_group = 'MiniNotifyNormal' },
