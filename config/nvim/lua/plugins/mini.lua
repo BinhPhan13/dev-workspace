@@ -101,10 +101,11 @@ local mini_statusline = function()
     local filetype = "%{&filetype}"
     local percent = "%2p%%"
     local location = "%3l:%-2c"
+    local undofile = vim.bo.undofile and 'undofile' or ''
 
     return mini.combine_groups({
       { hl = mode_hl, strings = { mode } },
-      { hl = 'MiniStatuslineDevinfo',  strings = { diagnostics } },
+      { hl = 'MiniStatuslineDevinfo',  strings = { diagnostics, undofile } },
       "%<", -- Mark general truncate point
       { hl = "MiniStatuslineFilename", strings = { filename } },
       "%=", -- End left alignment

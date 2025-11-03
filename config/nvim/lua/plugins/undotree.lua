@@ -2,12 +2,6 @@ return {
   'mbbill/undotree',
   config = function()
     vim.keymap.set('n', '<M-u>', vim.cmd.UndotreeShow)
-    vim.keymap.set('n', '<leader>uu', function()
-      if vim.bo.undofile then
-        vim.notify('undofile is on')
-      else vim.notify('undofile is off')
-      end
-    end, {desc = 'Show undofile option'})
 
     vim.keymap.set('n', '<leader>us', function()
       if not vim.bo.ma then return end
