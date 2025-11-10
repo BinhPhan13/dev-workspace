@@ -1,6 +1,5 @@
 return {
   'saghen/blink.cmp',
-  event = "InsertEnter",
   dependencies = { 'rafamadriz/friendly-snippets' },
   opts = {
     fuzzy = {
@@ -31,7 +30,7 @@ return {
     },
 
     completion = {
-      keyword = { range = 'full' },
+      keyword = { range = 'prefix' },
       trigger = { prefetch_on_insert = false },
       list = { selection = {
         preselect = false,
@@ -40,6 +39,7 @@ return {
       accept = {
         dot_repeat = true,
         create_undo_point = false,
+        auto_brackets = { enabled = false },
       },
 
       documentation = { auto_show = false },
@@ -62,8 +62,25 @@ return {
       },
     },
     appearance = { nerd_font_variant = 'mono' },
+
+    cmdline = {
+      keymap = {
+        preset = 'none',
+        ['<Tab>'] = { 'show', 'select_next' },
+        ['<S-Tab>'] = { 'show', 'select_prev' },
+      },
+      sources = { 'cmdline', 'buffer' },
+      completion = {
+        list = {
+          selection = {
+            preselect = false,
+            auto_insert = true,
+          },
+        },
+        menu = { auto_show = true },
+      },
+    },
   },
   opts_extend = { "sources.default" },
-  cmdline = { enabled = false },
 }
 
