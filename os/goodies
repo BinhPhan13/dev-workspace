@@ -11,6 +11,7 @@ progress
 vim
 xdg-utils
 xz-utils
+bzip2
 unzip
 rsync
 libxcb-xkb1

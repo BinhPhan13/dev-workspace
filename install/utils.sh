@@ -55,21 +55,25 @@ fetch() {
   curl -#fLO "$1" --output-dir "$2"
 }
 
+check_xfmt() {
+  local fmt="tar"
+  case "$1" in
+    *.zip)
+      need_cmd unzip
+      fmt="zip"
+      ;;
+    *.tar) ;;
+    *.txz | *.tar.xz) need_cmd xz ;;
+    *.tgz | *.tar.gz) need_cmd gzip ;;
+    *.tbz2 | *.tar.bz2) need_cmd bzip2 ;;
+    *) die "unknown format for '$1'" ;;
+  esac
+  echo $fmt
+}
+
 extract() {
   set -- "$1" "${2:-.}"
-  local fmt
-  case "$1" in
-    *.zip) fmt="zip" ;;
-    *.tar) fmt="tar" ;;
-    *.txz | *.tar.xz)
-      need_cmd xz
-      fmt="tar"
-      ;;
-    *.tgz | *.tar.gz)
-      need_cmd gzip
-      fmt="tar"
-      ;;
-  esac
+  local fmt=$(check_xfmt "$1")
 
   [ -d "$2" ] || mkdir -p "$2"
   case "$fmt" in
@@ -120,4 +124,3 @@ path_abs() {
     *) echo "$(pwd)/$path" ;;
   esac
 }
-

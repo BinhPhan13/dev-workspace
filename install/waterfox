@@ -1,0 +1,72 @@
+#!/bin/sh
+set -e
+
+self="${0%/*}"
+[ "$self" = "$0" ] && self="."
+. "$self/utils.sh"
+
+usage() {
+  cat >&2 <<EOF
+Usage: $0 [options]
+
+Options:
+  -help      Show this help message
+  -force     Force reinstallation
+  -version   Version to install (default '$version')
+  -lang      Language to install (default '$language')
+EOF
+}
+
+parse_args() {
+  platform="Linux_x86_64"
+  version="6.6.4"
+
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      -help)
+        usage
+        exit 0
+        ;;
+      -force)
+        force="true"
+        shift
+        ;;
+      -version)
+        version="$(get_opt "$@")"
+        shift 2
+        ;;
+      -*) die -h "Unknown option '$1'" ;;
+      *) shift ;;
+    esac
+  done
+}
+
+parse_args "$@"
+
+cmd="waterfox"
+has_cmd "$cmd" && [ -z "$force" ] &&
+  die "$cmd already installed, use -force to force reinstallation"
+
+log info "Installing $cmd $version"
+
+dest="$OPT_PATH/$cmd"
+[ -e "$dest" ] && rm -r "$dest"
+
+tmp_dir="$(mktemp -p "$OPT_PATH" -d "$cmd-install-XXX")"
+trap 'rm -rf "$tmp_dir"' EXIT INT TERM
+
+url="https://cdn1.waterfox.net/waterfox/releases/\
+$version/$platform/waterfox-$version.tar.bz2"
+outfile="${url##*/}"
+check_xfmt "$outfile"
+
+cd "$tmp_dir"
+fetch "$url"
+extract "$outfile"
+
+xdir="waterfox"
+mv "$xdir" -T "$dest"
+ln -sf "$dest/waterfox" "$BIN_PATH/$cmd"
+
+log success "$cmd installed"
+
