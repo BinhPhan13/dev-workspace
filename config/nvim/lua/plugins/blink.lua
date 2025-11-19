@@ -15,6 +15,14 @@ return {
           get_cwd = function(ctx) return vim.fn.getcwd() end,
           show_hidden_files_by_default = true,
         }},
+        buffer = { opts = {
+          get_bufnrs = function()
+            return vim
+            .iter(vim.api.nvim_list_bufs())
+            :filter(function(buf) return vim.bo[buf].buflisted end)
+            :totable()
+          end,
+        }},
       }
     },
 
