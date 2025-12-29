@@ -89,5 +89,5 @@ command -v nvim &>/dev/null && VISUAL=nvim
 
 export FZF_DEFAULT_OPTS="--height 50% --layout reverse --border \
 --walker-skip .git,node_modules,__pycache__,.venv"
-eval "$(fzf --bash)"
+command -v fzf &>/dev/null && eval "$(fzf --bash)"
 

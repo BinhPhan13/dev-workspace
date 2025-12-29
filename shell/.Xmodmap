@@ -1,4 +1,4 @@
 clear Lock
-keycode 9 = grave asciitilde
+! keycode 9 = grave asciitilde
 keycode 66 = Escape
 
