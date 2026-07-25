@@ -1,0 +1,50 @@
+#!/bin/sh
+set -e
+
+self="${0%/*}"
+[ "$self" = "$0" ] && self="."
+. "$self/utils.sh"
+
+usage() {
+  cat >&2 <<EOF
+Usage: $0 [options]
+
+Options:
+  -help      Show this help message
+  -force     Force reinstallation
+EOF
+}
+
+parse_args() {
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      -help)
+        usage
+        exit 0
+        ;;
+      -force)
+        force="true"
+        shift
+        ;;
+      -*) die -h "Unknown option '$1'" ;;
+      *) shift ;;
+    esac
+  done
+}
+
+parse_args "$@"
+
+cmd="herdr"
+has_cmd "$cmd" && [ -z "$force" ] &&
+  die "$cmd already installed, use -force to force reinstallation"
+
+log info "Installing $cmd"
+
+need_cmd curl
+curl -#fL "https://herdr.dev/install.sh" | HERDR_INSTALL_DIR="$BIN_PATH" sh
+
+"$BIN_PATH/$cmd" completion bash > "$CMP_PATH/$cmd"
+
+log success "$cmd installed"
+
+
