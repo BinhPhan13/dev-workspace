@@ -63,3 +63,8 @@ vim.keymap.set("n", "<leader>tx", function() pcall(vim.cmd.tabc) end)
 vim.keymap.set("n", "<leader>T", vim.cmd.term)
 vim.keymap.set("t", "<leader>\\", "<C-\\><C-n>")
 
+-- lazy.nvim
+vim.keymap.set("n", "<leader>lz", ":Lazy ")
+vim.keymap.set("n", "<leader>lzr", ":Lazy reload ")
+vim.keymap.set("n", "<leader>lzi", ":Lazy install ")
+vim.keymap.set("n", "<leader>ll", ":Lazy load ")
