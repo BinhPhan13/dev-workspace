@@ -4,9 +4,9 @@ local _load_extra = "LazyGroup" .. "Extra"
 return {
   {
     'nvim-mini/mini.notify',
-    lazy = false,
+    lazy = false, priority = 1001,
+    -- event = 'VeryLazy',
     config = function()
-
       require('mini.notify').setup({
         content = {
           format = function(notif)
@@ -118,6 +118,8 @@ return {
   },
   {
     "catppuccin/nvim", name = "catppuccin",
+    -- lazy = false, priority = 1000,
+    event = 'VeryLazy',
     config = function()
       require("catppuccin").setup({
         transparent_background = true,
@@ -144,7 +146,7 @@ return {
   {
     'romgrk/barbar.nvim',
     cmd = _load_ui,
-    dependencies = { "catppuccin", 'nvim-mini/mini.icons' },
+    dependencies = { 'nvim-mini/mini.icons' },
     commit = "539d73def39c9172b4d4d769f14090e08f37b29d",
     config = function()
       vim.g.barbar_auto_setup = false
@@ -157,8 +159,6 @@ return {
         highlight_visible = false,
         exclude_ft = {},
         exclude_name = {},
-        icons = {
-        }
       })
 
       vim.keymap.set('n', '<M-h>', function() vim.cmd('BufferPrevious') end)
@@ -297,7 +297,7 @@ return {
   },
   {
     'nvim-mini/mini.pick',
-    keys = "<leader>f;",
+    keys = "<leader>f",
     config = function()
       local win_config = function()
         local height = math.floor(0.85 * vim.o.lines)

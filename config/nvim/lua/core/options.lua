@@ -57,5 +57,7 @@ opt.signcolumn = "yes"
 -- glob.clipboard = 'osc52'
 glob.loaded_netrw = 1
 glob.loaded_netrwPlugin = 1
-
+glob.loaded_matchit = 1
+glob.loaded_rplugin = 1
+glob.loaded_editorconfig = 1
 
