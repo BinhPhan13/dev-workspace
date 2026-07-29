@@ -3,7 +3,11 @@ local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim/"
 local function setup()
   vim.opt.rtp:prepend(lazypath)
   require("lazy").setup({
-    defaults = { version = "*" },
+    defaults = { version = "*", lazy = true },
+    install = {
+      missing = false,
+      colorscheme = { "default" },
+    },
     spec = {
       { import = "plugins" },
     },

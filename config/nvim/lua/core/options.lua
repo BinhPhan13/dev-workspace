@@ -1,4 +1,5 @@
 local opt = vim.opt
+local glob = vim.g
 
 -- number
 opt.number = true
@@ -46,4 +47,15 @@ opt.inccommand = "nosplit"
 opt.backspace = "indent,eol,start"
 opt.swapfile = false
 opt.timeoutlen = 1500
+opt.fixendofline = false
+
+opt.cursorline = true
+opt.colorcolumn = "81"
+opt.signcolumn = "yes"
+
+-- global
+-- glob.clipboard = 'osc52'
+glob.loaded_netrw = 1
+glob.loaded_netrwPlugin = 1
+
 
