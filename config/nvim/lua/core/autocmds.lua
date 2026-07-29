@@ -32,3 +32,12 @@ vim.api.nvim_create_autocmd("VimEnter", {
   end,
 })
 
+vim.api.nvim_create_autocmd("BufWritePre", {
+  desc = "Remove trailing whitespaces",
+  callback = function()
+    vim.cmd("mark z")
+    vim.cmd("silent! %s/\\s\\+$//g")
+    vim.cmd("normal! 'z")
+  end
+})
+

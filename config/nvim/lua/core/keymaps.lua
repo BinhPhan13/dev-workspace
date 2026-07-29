@@ -12,20 +12,19 @@ vim.keymap.set({"i", "c"}, "<C-l>", "<Del>")
 vim.keymap.set({"n", "x"}, "<M-k>", "{")
 vim.keymap.set({"n", "x"}, "<M-j>", "}")
 
--- quit and save
-vim.keymap.set("n", "<M-q>", function() vim.cmd('silent! qa') end)
-vim.keymap.set("n", "<M-Q>", function() vim.cmd('qa!') end)
-vim.keymap.set("n", "<M-w>", function() vim.cmd('silent! w') end)
-vim.keymap.set("n", "<M-W>", function() vim.cmd('silent! wa') end)
+-- insert/command mode navigation
+vim.keymap.set({"i", "c"}, "<M-k>", "<Up>")
+vim.keymap.set({"i", "c"}, "<M-j>", "<Down>")
+vim.keymap.set({"i", "c"}, "<M-h>", "<Left>")
+vim.keymap.set({"i", "c"}, "<M-l>", "<Right>")
+vim.keymap.set({"i", "c"}, "<C-M-h>", "<C-Left>")
+vim.keymap.set({"i", "c"}, "<C-M-l>", "<C-Right>")
 
 -- resize window
 vim.keymap.set("n", "<S-Right>", "3<C-w>>")
 vim.keymap.set("n", "<S-Left>", "3<C-w><")
 vim.keymap.set("n", "<S-Down>", "3<C-w>-")
 vim.keymap.set("n", "<S-Up>", "3<C-w>+")
-
-vim.keymap.set("i", "<M-h>", "<C-g>U<Left>")
-vim.keymap.set("i", "<M-l>", "<C-g>U<Right>")
 
 -- yank into '+' register
 vim.keymap.set({ "n", "x" }, "<M-y>", '"+y')
@@ -38,12 +37,6 @@ vim.keymap.set("n", "<Esc>", ":<BS>")
 
 -- toggle hlsearch
 vim.keymap.set("n", "gh", function() vim.cmd.set('hlsearch!') end)
-
--- remove trailspace
-vim.keymap.set("n", "Q", function()
-  vim.cmd("silent! %s/\\s\\+$//g")
-  vim.cmd("normal! ''")
-end)
 
 -- substitute globally word under cursor
 vim.keymap.set("n", "S", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/g<Left><Left>")
