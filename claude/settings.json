@@ -1,0 +1,35 @@
+{
+  "env": {
+    "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1",
+    "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "1",
+    "PONYTAIL_DEFAULT_MODE": "ultra"
+  },
+  "model": "sonnet",
+  "enabledPlugins": {
+    "ponytail@ponytail": true,
+    "mattpocock-skills@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    }
+  },
+  "includeCoAuthoredBy": false,
+  "theme": "dark",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/scripts/guard-tmp-only-delete.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
