@@ -2,32 +2,71 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-# If not running interactively, don't do anything
+_addpath() {
+  local -n _var=$1
+  case ":$_var:" in
+    *":$2:"*) ;;
+    *) _var="$2:$_var" ;;
+  esac
+  export "$1"
+}
+_addpath PATH /sbin
+_addpath PATH /usr/sbin
+_addpath PATH "$HOME/bin"
+_addpath PATH "$HOME/.local/bin"
+
+_hascmd() { command -v "$1" &>/dev/null; }
+# default visual editor
+export VISUAL=nano
+_hascmd nvim && VISUAL=nvim
+export EDITOR=$VISUAL
+
+_source() {
+  [[ -r "$1" ]] && bash -n "$1" && . "$1"
+}
+_source "$HOME/.bash_aliases"
+
+#--------------------------------------------------------------------------------
+_source "$HOME/.lapt/env"
+
+export JAVA_HOME="$HOME/.jvm/21"
+_addpath PATH "$JAVA_HOME/bin"
+
+export NNN_BMS="h:$HOME;c:$HOME/.config;l:$HOME/.local"
+
+glm(){
+  GLM_API_KEY="$(ksp 'Personal/GLM Token')"
+  ANTHROPIC_BASE_URL="https://api.z.ai/api/anthropic" \
+  ANTHROPIC_AUTH_TOKEN=$GLM_API_KEY \
+  ANTHROPIC_DEFAULT_HAIKU_MODEL=glm-5.3-flash \
+  ANTHROPIC_DEFAULT_SONNET_MODEL=glm-5.3 \
+  ANTHROPIC_DEFAULT_OPUS_MODEL=glm-5.3 \
+  claude $1
+}
+
+#--------------------------------------------------------------------------------
+# If not running interactively, don't do anything below
 case $- in
   *i*) ;;
   *) return ;;
 esac
 
+_source /etc/bash_completion
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
-HISTCONTROL=ignoreboth:erasedups
+HISTCONTROL=ignoreboth
 
 # append to the history file, don't overwrite it
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=10000
-HISTFILESIZE=10000
+HISTFILESIZE=100000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
-
-# bash-completion
-[ -f /etc/bash_completion ] && . /etc/bash_completion
-
-# aliases
-[ -f ~/.bash_aliases ] && . ~/.bash_aliases
 
 # colors
 nc='\[\033[0m\]'
@@ -71,23 +110,4 @@ esac
 
 unset nc black BLACK red RED green GREEN yellow YELLOW blue BLUE pink PINK cyan CYAN gray GRAY
 unset color_prompt chroot_prompt
-
-# add to PATH
-addpath() {
-  if [ -d $1 ]; then
-    echo $PATH | grep -Eq "(^|:)$1(:|$)" || PATH=$1:$PATH
-  fi
-}
-addpath $HOME/.local/bin
-# sbin directories, useful on systems that have sudo
-addpath /sbin
-addpath /usr/sbin
-
-# default visual editor
-export VISUAL=vi
-command -v nvim &>/dev/null && VISUAL=nvim
-
-export FZF_DEFAULT_OPTS="--height 50% --layout reverse --border \
---walker-skip .git,node_modules,__pycache__,.venv"
-command -v fzf &>/dev/null && eval "$(fzf --bash)"
 
