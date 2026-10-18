@@ -1,28 +1,31 @@
 #!/bin/sh
 set -e
 
-download() {
 pkgs="
-file man powertop
-curl telnet axel
-bash-completion
-command-not-found
-progress
-vim
-xdg-utils
-xz-utils
-bzip2
-unzip
+bash-completion man file command-not-found
+iw hostapd iptables
+xdotool xclip yad
+tree jq nnn
+zip unzip xz-utils lbzip2
+systemd-timesyncd
+curl axel links
+git
 rsync
+libnotify-bin
+progress sysstat
+make pkgconf
+powertop
+
+libnspr4 libnss3
 libxcb-xkb1
-$([ "$(ps -p1 --no-headers -o comm)" = "systemd" ] && echo "" || echo "systemctl")
+libgpg-error0
 "
-apt install -y --no-install-recommends $pkgs
-}
 
-setup() {
-  :
-}
+norecs="
+xdg-utils
+cmake
+"
 
-[ "$(id -u)" = "0" ] && download || setup
+sudo apt install $pkgs   -y
+sudo apt install $norecs -y --no-install-recommends
 
